@@ -16,6 +16,14 @@ capture**. Follow these rules on top of whatever a loaded skill says.
   model doesn't converge or an assumption is violated, say so.
 - **Show the specification.** When you fit a model, state the estimator, sample,
   and key choices so the researcher can check them.
+- **Output defaults: Word tables + colorblind-safe figures.** Unless the user or
+  their target journal asks for LaTeX, produce tables in **Word format by default**
+  (`.docx` via `modelsummary`/`flextable` in R; `.rtf`/`putdocx` via `esttab` in
+  Stata) — most sociology journals want Word. Also write a `.tex` when it's cheap.
+  **Every figure uses a colorblind-safe palette by default** — Okabe–Ito for
+  categorical color, viridis for continuous/ordered (R); a colorblind-safe scheme
+  (`blindschemes`/`stcolor`) in Stata. Don't hand-pick arbitrary colors. See each
+  analysis skill's visualization technique guide for the how-to.
 - **Raw data is immutable.** Anything under `data/raw/` is never edited, recoded,
   or subset in place — cleaning reads raw and writes `data/processed/`. Acquisition
   (the `data-acquisition` skill) lands raw data with a `PROVENANCE.md` (source DOI,

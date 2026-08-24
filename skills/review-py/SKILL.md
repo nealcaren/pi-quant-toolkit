@@ -95,6 +95,8 @@ State which model you're reviewing on, **before** reading the code.
       script's actual output (re-run the cell/line if in doubt).
 - [ ] Tables/figures written to disk with relative paths, not only shown inline
 - [ ] Figures reproducible from code (size/style set in code, not by hand)
+- [ ] **Tables exported to Word (`.docx`) by default** (`python-docx`, or a styled pandas table), unless the target journal wants LaTeX
+- [ ] **Figures use a colorblind-safe palette** (`seaborn` `"colorblind"`, or `viridis`/`cividis`) — not `jet`/`rainbow`; distinguishable in greyscale
 
 ---
 

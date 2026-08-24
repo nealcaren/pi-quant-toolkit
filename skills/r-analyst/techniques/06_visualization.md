@@ -23,6 +23,55 @@ Publication-quality figures, coefficient plots, event studies, and table output 
 
 ---
 
+## 0. Output defaults: Word tables + colorblind-safe figures
+
+Apply these unless the user or their target journal says otherwise (see the
+project-wide rule in `AGENTS.md`).
+
+### Tables → Word by default
+
+Most sociology journals want `.docx`, not LaTeX. Default `modelsummary` to Word;
+also emit `.tex` when it's cheap.
+
+```r
+library(modelsummary)
+modelsummary(models,
+  output = "output/tables/table2_models.docx",   # <- Word by default
+  stars  = c('*' = 0.1, '**' = 0.05, '***' = 0.01))
+# and, when useful for a LaTeX submission:
+modelsummary(models, output = "output/tables/table2_models.tex")
+```
+`modelsummary` renders `.docx` via `flextable`/`gt` (install `flextable`). For a
+fully hand-built table, `flextable` + `officer` writes `.docx` directly.
+
+### Figures → colorblind-safe palette by default
+
+Use **Okabe–Ito** for categorical color and **viridis** for continuous/ordered
+scales — both are colorblind-safe and greyscale-friendly. Don't hand-pick colors
+like `"steelblue"`/`"coral"`; set a safe default once and reuse it.
+
+```r
+# Okabe-Ito palette (colorblind-safe categorical). Install ggokabeito, or inline it.
+library(ggplot2)
+okabe_ito <- c("#E69F00","#56B4E9","#009E73","#F0E442",
+               "#0072B2","#D55E00","#CC79A7","#000000")
+
+# Categorical color/fill -> Okabe-Ito
+p + scale_color_manual(values = okabe_ito) + scale_fill_manual(values = okabe_ito)
+# or, with the package:  ggokabeito::scale_color_okabe_ito()
+
+# Continuous / ordered -> viridis
+p + scale_color_viridis_c() ; p + scale_fill_viridis_d()
+```
+
+Sanity-check any figure in greyscale (or a colorblindness simulator such as
+`colorBlindness::cvdPlot()`) before finalizing — if series become
+indistinguishable, the color mapping isn't doing the work and you need shape,
+linetype, or direct labels too. Examples further down that use `"steelblue"`/etc.
+are illustrative; prefer the safe palette above for anything going in the paper.
+
+---
+
 ## 1. ggplot2 Fundamentals
 
 ### When to Use ggplot2

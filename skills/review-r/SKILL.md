@@ -95,6 +95,8 @@ If the user is already on a strong model, say so and proceed. Do this check
 - [ ] Tables/figures written to disk with relative paths, not just printed
 - [ ] Numbers in the script match any numbers quoted in the write-up
 - [ ] Figures reproducible (theme/dimensions set in code, not by hand)
+- [ ] **Tables exported to Word (`.docx`) by default** (`modelsummary`/`flextable`), unless the target journal wants LaTeX
+- [ ] **Figures use a colorblind-safe palette** (Okabe–Ito categorical, viridis continuous) — not hand-picked colors; distinguishable in greyscale
 
 ---
 

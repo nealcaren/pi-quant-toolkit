@@ -22,6 +22,10 @@ Analysis isn't complete until it's communicated. This phase transforms results i
 
 ### 1. Finalize Tables
 
+> **Default to Word.** Write tables with `esttab ... using "....rtf"` (opens in
+> Word) instead of `.tex` — most sociology journals want Word. Keep a `.tex` too
+> when the target is a LaTeX submission. See `techniques/04_visualization.md` §0.
+
 **Table 1: Descriptive Statistics**
 ```stata
 * Summary statistics

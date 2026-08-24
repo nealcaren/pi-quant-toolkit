@@ -87,6 +87,8 @@ State which model you're reviewing on, **before** reading the code.
       figure equals the script's output (re-run the relevant command if in doubt).
 - [ ] Tables/figures written to disk with relative paths, not just shown in the Results window
 - [ ] Figures reproducible from code (scheme/size set in the do-file, not by hand)
+- [ ] **Tables exported to Word by default** (`esttab ... using "*.rtf"` / `putdocx`), unless the target journal wants LaTeX
+- [ ] **A colorblind-safe scheme is set** (`blindschemes` `plotplain`/`plottig`, or `stcolor`) — not the default `s2color`; series distinguishable in greyscale (color + `lpattern`/`msymbol`)
 
 ---
 

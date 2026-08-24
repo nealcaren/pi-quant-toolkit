@@ -1,5 +1,13 @@
 # Text Visualization in Python
 
+> **Output defaults (see `AGENTS.md`).** Use a **colorblind-safe** palette by
+> default: `seaborn.set_palette("colorblind")` (or `sns.color_palette("colorblind")`)
+> for categorical, and a perceptually-uniform map (`cmap="viridis"`/`"cividis"`) for
+> continuous — avoid `jet`/`rainbow`. Combine color with marker/linestyle so series
+> stay distinct, and check figures in greyscale. Export tables (topic-term tables,
+> classifier metrics) to **Word** (`.docx`) by default — e.g. `python-docx`, or
+> `pandas` `df.to_html()`/`Styler` opened in Word — unless LaTeX is requested.
+
 ## Package Versions
 
 ```python
