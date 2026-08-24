@@ -4,6 +4,40 @@ Publication-quality tables, coefficient plots, and figures. All code tested on S
 
 ---
 
+## 0. Output defaults: Word tables + colorblind-safe figures
+
+Apply unless the user or their target journal says otherwise (see `AGENTS.md`).
+
+### Tables → Word by default
+
+Most sociology journals want Word. `esttab` writes `.rtf` (opens in Word) — make
+that the default `using` target; add `.tex` when a LaTeX submission needs it.
+
+```stata
+esttab m1 m2 m3 using "table2_models.rtf", replace ///   // <- Word by default
+    se star(* 0.10 ** 0.05 *** 0.01) label
+* Stata 17+: putdocx/collect can build a native .docx with more layout control.
+```
+
+### Figures → colorblind-safe scheme by default
+
+Stata's default `s2color` is **not** colorblind-safe. Set a safe scheme once at
+the top of the do-file and every graph inherits it:
+
+```stata
+* Preferred: the blindschemes package (colorblind-safe, publication-clean)
+* one-time install:  ssc install blindschemes, replace all
+set scheme plotplain     // clean B/W-friendly; or `plottig` for a gridded look
+* Stata 18 alternative (no install): `set scheme stcolor`
+* Greyscale-only option: `set scheme s1mono`
+```
+
+`plotplain`/`plottig` use a colorblind-safe ordering; combine color with
+`lpattern()`/marker `msymbol()` differences so series stay distinct in greyscale.
+Check a finished figure in greyscale before finalizing.
+
+---
+
 ## 1. Regression Tables with esttab
 
 ### Basic Table

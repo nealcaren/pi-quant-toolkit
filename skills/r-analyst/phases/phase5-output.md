@@ -21,6 +21,10 @@ Analysis isn't complete until it's communicated. This phase transforms results i
 
 ### 1. Finalize Tables
 
+> **Default to Word.** Write tables as `.docx` (change the `output =` extension) so
+> they drop into a manuscript — most sociology journals want Word. Emit `.tex` too
+> when the target is a LaTeX submission. See `techniques/06_visualization.md` §0.
+
 **Table 1: Descriptive Statistics**
 ```r
 library(modelsummary)

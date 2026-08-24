@@ -1,5 +1,12 @@
 # Text Visualization in R
 
+> **Output defaults (see `AGENTS.md`).** Use a **colorblind-safe** palette by
+> default — Okabe–Ito for categorical (`ggokabeito::scale_color_okabe_ito()` or the
+> inline `c("#E69F00","#56B4E9","#009E73","#F0E442","#0072B2","#D55E00","#CC79A7","#000000")`),
+> viridis for continuous — and check figures in greyscale. Export any tables
+> (topic-term tables, top-features) to **Word** (`.docx`) by default via
+> `flextable`/`modelsummary` unless a LaTeX submission is requested.
+
 ## Package Versions
 
 ```r
