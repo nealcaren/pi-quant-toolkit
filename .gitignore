@@ -1,4 +1,6 @@
 node_modules/
+# Local pi state (e.g. project-scoped `pi install -l` writes here) — never commit
+.pi/
 *.log
 .DS_Store
 .env
