@@ -148,6 +148,16 @@ ggsave("output/figures/figure3_coefplot.pdf", p_coef, width = 6, height = 4)
 
 ### 3. Write Results Narrative
 
+> **Emit a results ledger first, then reconcile.** Before writing prose, write
+> every reportable statistic to `output/results.json` at full precision (see the
+> `stat-check` skill for emit snippets). Draft the narrative reading numbers from
+> the model objects/ledger — never hand-type a coefficient/N/p from memory. When
+> the draft is done, run the reconciliation pass and resolve every orphan:
+> ```bash
+> uv run skills/stat-check/scripts/reconcile_report.py \
+>     --report memos/analysis-memo.md --ledger output/results.json
+> ```
+
 Draft the key paragraphs for the results section:
 
 **Main effect paragraph:**
@@ -392,7 +402,8 @@ Return a summary to the orchestrator that includes:
 4. Any remaining questions or concerns
 5. Confirmation that replication materials are ready
 6. Confirmation that the final reproducibility check passed and the replication package is complete
-7. Checklist tier achieved (minimum/strong/exemplary)
-8. Confirmation that the Phase 5 section was appended to `memos/analysis-memo.md`
+7. Confirmation that `output/results.json` was emitted and the `stat-check` reconciliation pass ran clean (no orphan numbers in the memo)
+8. Checklist tier achieved (minimum/strong/exemplary)
+9. Confirmation that the Phase 5 section was appended to `memos/analysis-memo.md`
 
 **The analysis is now complete.** All materials should be ready for paper writing.

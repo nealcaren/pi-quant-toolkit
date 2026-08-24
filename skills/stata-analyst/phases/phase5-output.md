@@ -122,6 +122,16 @@ graph export "$figures/figure3_coefplot.pdf", replace
 
 ### 3. Write Results Narrative
 
+> **Emit a results ledger first, then reconcile.** Before writing prose, write
+> every reportable statistic (from `e()`/`r()` scalars) to `output/results.json`
+> at full precision (see the `stat-check` skill). Draft the narrative from those
+> stored values — never hand-type a coefficient/N/p from memory. When done, run:
+> ```bash
+> uv run skills/stat-check/scripts/reconcile_report.py \
+>     --report memos/analysis-memo.md --ledger output/results.json
+> ```
+> and resolve every orphan before finalizing.
+
 Draft the key paragraphs for the results section:
 
 **Main effect paragraph:**
@@ -386,7 +396,8 @@ Return a summary to the orchestrator that includes:
 3. Key limitations
 4. Any remaining questions or concerns
 5. Confirmation that replication materials are ready
-6. Checklist tier achieved (minimum/strong/exemplary)
-7. Confirmation that the final reproducibility check passed (clean-room master run) and the replication package is complete
+6. Confirmation that `output/results.json` was emitted and the `stat-check` reconciliation pass ran clean (no orphan numbers in the memo)
+7. Checklist tier achieved (minimum/strong/exemplary)
+8. Confirmation that the final reproducibility check passed (clean-room master run) and the replication package is complete
 
 **The analysis is now complete.** All materials should be ready for paper writing.

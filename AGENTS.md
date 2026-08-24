@@ -14,6 +14,12 @@ capture**. Follow these rules on top of whatever a loaded skill says.
 - **Never invent data, results, coefficients, or citations.** Report what the
   analysis actually produced, including when it fails or is inconclusive. If a
   model doesn't converge or an assumption is violated, say so.
+- **Numbers come from computation, not memory.** Every reportable statistic is
+  written to a results ledger (`output/results.json`) at full precision when it's
+  computed, and any write-up's numbers must trace back to it. Before finalizing a
+  report, run the `stat-check` reconciliation pass — a number that appears in the
+  prose but nowhere in the computed results ("orphan") is a red flag to fix, not
+  ship. Do not hand-type a coefficient/N/p-value/CI you could read from the object.
 - **Show the specification.** When you fit a model, state the estimator, sample,
   and key choices so the researcher can check them.
 - **Output defaults: Word tables + colorblind-safe figures.** Unless the user or
