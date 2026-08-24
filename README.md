@@ -2,9 +2,9 @@
 
 [![CI](https://github.com/nealcaren/pi-quant-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/nealcaren/pi-quant-toolkit/actions/workflows/ci.yml)
 
-An AI research assistant for **quantitative social science**. You describe a task
-in plain English — "run a difference-in-differences on this data," "find recent
-papers on protest and add them to my Zotero" — and it does the work.
+An AI research assistant for **quantitative social science**. Tell it what you
+want in plain English, and it does the work: "run a difference-in-differences on
+this data," or "find recent papers on protest and add them to my Zotero."
 
 Built for students. No coding experience needed. Never used a terminal? This
 guide walks you through every step.
@@ -20,8 +20,8 @@ guide walks you through every step.
    time. Make one at [openrouter.ai](https://openrouter.ai) and add a few dollars
    of credit. You'll connect it at the end.
 
-That's all for the main tools. (Literature search needs two more things — see
-[Literature search setup](#literature-search-setup) below.)
+That's all for the main tools. (Literature search needs two more things; see
+[below](#literature-search-setup).)
 
 ---
 
@@ -70,8 +70,8 @@ sign in. Done — you only do this once.
 > *"Run a difference-in-differences on this panel in R."*
 > *"Find recent work on protest and social media and add the best to my Zotero."*
 
-Stuck on a hard analysis? Type `/model openrouter/deepseek/deepseek-v4-pro` to switch to a
-smarter (slightly pricier) model for that session.
+For a hard analysis, switch to a smarter (slightly pricier) model just for that
+session: `/model openrouter/deepseek/deepseek-v4-pro`.
 
 ---
 
@@ -89,7 +89,7 @@ smarter (slightly pricier) model for that session.
 
 ---
 
-## Always review your code — and switch models to do it
+## Always review your code, on a different model
 
 The AI writes code fast, but **you should never trust an analysis you haven't
 checked.** Two habits that catch most mistakes:
@@ -99,7 +99,7 @@ checked.** Two habits that catch most mistakes:
 > *"Review this R script for correctness and reproducibility."*
 
 That runs `review-r`, which reports problems (wrong clustering, non-reproducible
-paths, numerical bugs) **without changing your code** — you decide what to fix.
+paths, numerical bugs) **without changing your code**. You decide what to fix.
 
 **2. Review with a *stronger, different* model than wrote the code.** A model
 checking its own work tends to bless its own mistakes. Before reviewing, switch:
@@ -108,9 +108,9 @@ checking its own work tends to bless its own mistakes. Before reviewing, switch:
 /model openrouter/deepseek/deepseek-v4-pro
 ```
 
-Even better, if you have access, review with a **different** model family than
-you wrote with — a fresh set of eyes catches what the original missed. Switch
-back to the cheap model (`/model openrouter/deepseek/deepseek-v4-flash-0731`) for routine
+Even better, if you can, review with a **different** model family than you wrote
+with. An outside critic catches what the original missed. Switch back to the
+cheap model (`/model openrouter/deepseek/deepseek-v4-flash-0731`) for routine
 work afterward.
 
 ---
@@ -125,7 +125,7 @@ That's normal, but:
 - Keep your work backed up (or in version control) so anything is easy to undo.
 
 **It costs money per use** — cheap, but real. Watch your credit on
-[openrouter.ai](https://openrouter.ai). The default model is very inexpensive.
+[openrouter.ai](https://openrouter.ai). The default model is cheap.
 
 ---
 
@@ -147,8 +147,8 @@ New references show up next time you open Zotero.
 
 ## Updating
 
-This toolkit improves over time. To pull the latest version — both Pi itself and
-the toolkit's skills — open a terminal and run:
+This toolkit improves over time. To pull the latest version of both Pi and the
+toolkit's skills, open a terminal and run:
 
 ```
 pi update --all
