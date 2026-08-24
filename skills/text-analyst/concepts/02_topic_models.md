@@ -4,6 +4,8 @@
 
 Topic models are unsupervised methods that discover latent themes in document collections. Each topic is a probability distribution over words; each document is a mixture of topics.
 
+> **Tooling (Python).** The `topica` package is the preferred unified implementation for LDA, STM, NMF, BERTopic, KeyATM and related models — one API, with built-in coherence, `search_k`, `bootstrap_stability`, and `estimate_effect`. STM with covariates no longer requires R. See `python-techniques/07_topica.md`. The conceptual guidance below applies regardless of implementation.
+
 ## When to Use Topic Models
 
 **Good fit:**
@@ -322,4 +324,4 @@ For STM, topic prevalence was modeled as a function of
 | **CTM** | Correlated topics | Manual | No | R, Python |
 | **DTM** | Temporal dynamics | Manual | Time built-in | Python |
 
-**Recommendation:** Use STM for academic social science research in R. Use BERTopic for neural approach in Python.
+**Recommendation:** In Python, reach for `topica` first — it unifies LDA/STM/NMF/BERTopic/KeyATM under one API with built-in diagnostics, and supports STM with covariates without R (`python-techniques/07_topica.md`). Use the R `stm` package when you are already working in R.

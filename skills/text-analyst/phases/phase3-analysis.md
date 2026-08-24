@@ -6,6 +6,8 @@ You are executing Phase 3 of a computational text analysis. Your goal is to run 
 
 This phase executes the pre-specified analysis. The key discipline is: run what was specified, not what looks best after seeing results. Document any deviations.
 
+> **Do not believe any topic, label, or score before checking it.** Run the results plausibility checks in `text-concepts/07_plausibility_checks.md` — read the top documents per topic, compare classifier accuracy to the base rate, validate sentiment on known-polarity documents. Then report cross-method consistency: do LDA/NMF/BERTopic (or dictionary/supervised) converge or diverge? End the stage reproducible-ready and audit the handoff (`text-concepts/08_handoff_audit.md`).
+
 ## Technique Guides
 
 **Consult implementation guides** for your language:
@@ -240,6 +242,21 @@ Append a `## Phase 3: Main Analysis` section to `memos/analysis-memo.md`:
 
 [2-3 paragraphs of initial interpretation with caveats]
 
+### Plausibility Check
+- Topics justified by reading documents: [Yes/No — notes]
+- Topic distinctiveness: [distinct / overlapping]
+- Classifier vs base rate: [accuracy X% vs base rate Y%] + confusion matrix reviewed
+- Sentiment face-validity on known-polarity docs: [holds/fails]
+- Face-validity statement: [one line on whether results are believable]
+
+### Cross-Method Consistency
+- Do methods converge / partly agree / diverge? [state explicitly — LDA/NMF/BERTopic or dictionary/supervised]
+
+### Handoff Audit
+- Runs clean from a fresh session: [Yes/No]
+- Seeds set; pipeline fully in code: [Yes/No]
+- Inputs → outputs canonical; committed: [Yes/No]
+
 ## Concerns / Questions
 
 - [Concern 1]
@@ -274,5 +291,8 @@ Return a summary to the orchestrator that includes:
 3. Any deviations from specification
 4. Preliminary interpretation
 5. Concerns requiring attention in validation
+6. Confirm results were checked against real documents
+7. State whether methods converge or diverge
+8. Confirm the handoff audit passed
 
 **Do not proceed to Phase 4 until the user reviews these results.**

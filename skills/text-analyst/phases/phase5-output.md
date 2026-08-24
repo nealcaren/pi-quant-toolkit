@@ -239,6 +239,20 @@ We used [method] implemented in [package] (version X.X).
 [Robustness checks: what varied, results]
 ```
 
+## Final Reproducibility Check
+
+Before shipping, run a clean-room master rebuild (`text-concepts/08_handoff_audit.md`):
+
+- Execute a single master script (`00_master.R` or `00_master.py`) that rebuilds **every** topic, label, score, model, and figure from the raw corpus — no manual steps, no leftover objects.
+- Reconcile outputs against the paper: with seeds fixed they should be **identical**, table for table and figure for figure. Note any genuinely nondeterministic neural steps (e.g., UMAP/HDBSCAN in BERTopic) and how you bounded them.
+- Capture the environment: `sessionInfo()` / `pip freeze` (include the `topica` version).
+- Save the dictionaries and the hand-coded validation sets alongside the code.
+- Assemble the full replication package.
+
+## Final Plausibility Pass
+
+Before shipping, re-read a sample of the documents behind every headline claim and confirm they say what the claim says (`text-concepts/07_plausibility_checks.md`). Confirm the convergence/divergence story across methods is stated explicitly in the write-up — do not leave it implicit.
+
 ## Output: Final Package
 
 Create the following in `output/`:
@@ -296,6 +310,13 @@ Append a `## Phase 5: Output & Interpretation` section to `memos/analysis-memo.m
 - [Cannot claim 1]: [why not]
 - [Cannot claim 2]: [why not]
 
+## Final Reproducibility Check
+- Clean-room master run passed (00_master rebuilds all outputs from raw): [Yes/No]
+- Outputs reconcile with the paper (identical with seeds fixed): [Yes/No — note nondeterministic steps]
+- Environment captured (sessionInfo/pip freeze, incl. topica version): [Yes/No]
+- Replication package complete (code, dictionaries, hand-coded validation sets): [Yes/No]
+- Remaining caveats: [none / list]
+
 ## Quality Checklist
 
 - [ ] All tables formatted consistently
@@ -317,5 +338,6 @@ Return a summary to the orchestrator that includes:
 3. Main limitations to acknowledge
 4. Replication package status
 5. Any remaining concerns
+6. Confirm the final reproducibility check passed and the replication package is complete
 
 **Analysis is complete when user accepts the outputs.**
