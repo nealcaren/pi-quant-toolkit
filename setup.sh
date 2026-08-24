@@ -1,48 +1,60 @@
 #!/usr/bin/env bash
-# One-time setup for the pi-quant-toolkit.
-# Prereqs you must install first: Node.js 20+, uv, and (for lit-search) Zotero.
+# One-command setup for the pi-quant-toolkit (macOS / Linux).
+# Safe to run straight from the web:
+#   curl -fsSL https://raw.githubusercontent.com/nealcaren/pi-quant-toolkit/main/setup.sh | bash
+# Requires Node.js 22.19+ installed first (see the README).
 set -euo pipefail
 
-# Where this toolkit lives once hosted — edit before sharing with students.
 PKG="git:github.com/nealcaren/pi-quant-toolkit@main"
+CHEAP_MODEL="deepseek/deepseek-v4-flash-0731"
 
-# --- Node version guard: Pi requires Node >= 22.19.0 ---------------------
+# 1. Check Node.js is new enough (Pi needs 22.19+).
 NODE_MAJOR="$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo 0)"
 if [ "$NODE_MAJOR" -lt 22 ]; then
-  echo "ERROR: Pi needs Node.js 22.19.0 or newer. You have $(node --version 2>/dev/null || echo 'no node')."
-  echo "       Install Node 22 (see README Step 0), then re-run this script."
-  echo "       With nvm:  nvm install 22 && nvm alias default 22   (then open a new terminal)"
+  echo "ERROR: Pi needs Node.js 22.19 or newer. You have: $(node --version 2>/dev/null || echo 'no Node.js found')."
+  echo "       Install Node.js 22 from https://nodejs.org (pick the '22 LTS' button), then run this again."
   exit 1
 fi
-# ------------------------------------------------------------------------
 
-echo "==> Installing Pi (the coding agent)"
+# 2. Install the Pi agent.
+echo "==> Installing Pi (the coding assistant)..."
 npm install -g @earendil-works/pi-coding-agent@latest
 
-echo "==> Installing the quant-social-science toolkit (skills + bundled extensions)"
-# This package bundles its extensions (pi-web-access, ask-user-question,
-# plannotator), so this single install brings them along.
+# 3. Install this toolkit (skills + bundled web-search/ask/plan extensions).
+echo "==> Installing the quant toolkit..."
 pi install "$PKG"
 
-# --- Fallback -------------------------------------------------------------
-# If an extension does not load after the install above (check with /extensions
-# inside pi), install them explicitly:
-#   pi install npm:pi-web-access
-#   pi install npm:@juicesharp/rpiv-ask-user-question
-#   pi install npm:@plannotator/pi-extension
-# --------------------------------------------------------------------------
+# 4. Point Pi at the cheap model by default (only if you haven't chosen one).
+echo "==> Setting the default model..."
+node - "$CHEAP_MODEL" <<'NODE'
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const model = process.argv[2];
+const p = path.join(os.homedir(), ".pi", "agent", "settings.json");
+let s = {};
+try { s = JSON.parse(fs.readFileSync(p, "utf8")); } catch {}
+if (s.defaultModel) {
+  console.log(`    (kept your existing default: ${s.defaultModel})`);
+} else {
+  s.defaultProvider = "openrouter";
+  s.defaultModel = model;
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(p, JSON.stringify(s, null, 2) + "\n");
+  console.log(`    default model set to ${model}`);
+}
+NODE
 
 cat <<'NEXT'
 
-Done. Two things left, by hand:
+==> All set! One thing left to do by hand:
 
-  1. Connect OpenRouter (this is what you pay per token):
-        pi        # then run:  /login openrouter
-     or:  export OPENROUTER_API_KEY=sk-or-...
+  Start Pi and connect your OpenRouter account (this is what pays per use):
 
-  2. Start Pi on the cheap default model:
-        pi --provider openrouter --model deepseek/deepseek-v4-flash-0731
-     Switch to the smarter model for hard analysis:
-        /model deepseek/deepseek-v4-pro
+      pi
+      /login openrouter        <- type this once Pi is open
+
+  After that, just run  pi  in any project folder and describe your task.
+  Need more power for a hard analysis?  Type:  /model deepseek/deepseek-v4-pro
 
 NEXT

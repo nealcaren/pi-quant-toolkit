@@ -2,224 +2,151 @@
 
 [![CI](https://github.com/nealcaren/pi-quant-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/nealcaren/pi-quant-toolkit/actions/workflows/ci.yml)
 
-A [Pi](https://pi.dev) coding-agent package for **quantitative social science**.
-It bundles analysis skills (R, Stata, computational text analysis, project
-scaffolding) plus a literature-search skill that finds work through OpenAlex /
-Crossref and files chosen references directly into your **local Zotero library**.
+An AI research assistant for **quantitative social science**. You describe a task
+in plain English — "run a difference-in-differences on this data," "find recent
+papers on protest and add them to my Zotero" — and it does the work.
 
-Built for grad students: install once, run against a cheap pay-as-you-go model.
+Built for students. No coding experience needed. Never used a terminal? This
+guide walks you through every step.
+
+---
+
+## What you need before you start
+
+1. **Node.js** — free software this runs on. Download the **"22 LTS"** button
+   from [nodejs.org](https://nodejs.org), open the installer, and click through
+   it (keep every default). That's it — no typing.
+2. **An OpenRouter account** — this is what pays for the AI, a few cents at a
+   time. Make one at [openrouter.ai](https://openrouter.ai) and add a few dollars
+   of credit. You'll connect it at the end.
+
+That's all for the main tools. (Literature search needs two more things — see
+[Literature search setup](#literature-search-setup) below.)
+
+---
+
+## Install it (one command)
+
+**Step 1 — open a terminal.** A terminal is a window where you type commands.
+
+- **Mac:** press `Cmd` + `Space`, type `Terminal`, press `Enter`.
+- **Windows:** click the Start menu, type `PowerShell`, press `Enter`.
+
+**Step 2 — copy the line for your computer, paste it into that window, press
+`Enter`.** (Paste is `Cmd`+`V` on Mac, right-click on Windows.)
+
+**Mac:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/nealcaren/pi-quant-toolkit/main/setup.sh | bash
+```
+
+**Windows:**
+```powershell
+irm https://raw.githubusercontent.com/nealcaren/pi-quant-toolkit/main/setup.ps1 | iex
+```
+
+It installs everything and picks a cheap AI model for you. Wait for it to finish
+(about a minute) and print "All set!"
+
+**Step 3 — connect OpenRouter.** In the same window, type:
+```
+pi
+```
+Pi opens. Type `/login openrouter` and press `Enter`, then follow the prompt to
+sign in. Done — you only do this once.
+
+---
+
+## Use it
+
+1. Put the files you're working with in a folder (e.g. a folder for your paper).
+2. Open a terminal **in that folder**:
+   - **Mac:** right-click the folder → *Services* → *New Terminal at Folder*.
+   - **Windows:** open the folder, click the address bar, type `powershell`, `Enter`.
+3. Type `pi` and press `Enter`.
+4. Describe what you want. Pi picks the right tool automatically:
+
+> *"Set up a new project for my dissertation chapter."*
+> *"Run a difference-in-differences on this panel in R."*
+> *"Find recent work on protest and social media and add the best to my Zotero."*
+
+Stuck on a hard analysis? Type `/model deepseek/deepseek-v4-pro` to switch to a
+smarter (slightly pricier) model for that session.
 
 ---
 
 ## What's inside
 
-| Skill | What it does |
-|-------|--------------|
-| `r-analyst` | Publication-ready statistical analysis in R (DiD, IV, matching, panel, etc.), phased workflow |
+| Tool | What it does |
+|------|--------------|
+| `r-analyst` | Statistical analysis in R (DiD, IV, matching, panel, etc.) |
 | `stata-analyst` | The same, in Stata |
-| `text-analyst` | Computational text analysis (topic models, sentiment, classification, embeddings) in R or Python |
-| `project-scaffold` | Initialize a standard research-project directory + metadata files |
-| `lit-search` | Search OpenAlex/Crossref, then add chosen references straight into local Zotero |
-
-These are analysis + capture tools. There are no writing skills in this bundle.
+| `text-analyst` | Text analysis (topic models, sentiment, classification) in R or Python |
+| `project-scaffold` | Sets up a tidy research-project folder for you |
+| `lit-search` | Finds papers via OpenAlex/Crossref and files them into Zotero |
 
 ---
 
-## Step 0 — install Node.js (do this first)
+## Good to know
 
-Everything below needs **Node.js 22.19.0 or newer** (the Pi agent refuses to run
-on older Node — you'll see an `undici` / `markAsUncloneable` crash). Nothing
-works until `node --version` prints `v22.19` or higher in a fresh terminal. This
-is the step beginners skip, so install it before anything else.
+**It acts on its own.** Pi runs commands and edits files without asking first.
+That's normal, but:
 
-**macOS**
+- Work **inside a project folder**, not your whole computer.
+- Glance at what it's doing; if something looks wrong, press `Esc` to stop it.
+- Keep your work backed up (or in version control) so anything is easy to undo.
 
+**It costs money per use** — cheap, but real. Watch your credit on
+[openrouter.ai](https://openrouter.ai). The default model is very inexpensive.
+
+---
+
+## Literature search setup
+
+`lit-search` needs two extra things:
+
+- **[uv](https://docs.astral.sh/uv/)** — runs a small helper. Install it by
+  pasting one line into your terminal:
+  - Mac: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+  - Windows: `irm https://astral.sh/uv/install.ps1 | iex`
+- **Zotero desktop** — your reference library.
+
+When adding references, **quit Zotero first** (Pi won't write while it's open, to
+protect your library) and it makes a timestamped backup before its first change.
+New references show up next time you open Zotero.
+
+---
+
+<details>
+<summary>Advanced: manual install & troubleshooting</summary>
+
+**Install without the one-line script:**
 ```bash
-# Option A — Homebrew (recommended if you have it)
-brew install node@22
-
-# Option B — the installer from https://nodejs.org (pick the 22 LTS build)
-```
-
-**Windows**
-
-```powershell
-# Option A — winget (built into Windows 10/11)
-winget install OpenJS.NodeJS.LTS   # ships Node 22 LTS
-
-# Option B — the installer from https://nodejs.org (pick the 22 LTS build).
-# During install, leave "Add to PATH" checked.
-```
-
-Then **close and reopen your terminal** and confirm:
-
-```
-node --version    # must print v22.19.0 or higher
-npm --version
-```
-
-> Already have an older Node (e.g. v20)? Upgrade to 22. If you use **nvm**:
-> `nvm install 22 && nvm alias default 22`, then open a new terminal. Note that
-> nvm keeps global packages *per Node version*, so after switching you must
-> reinstall Pi (Step "Install" below) under Node 22.
-
-> Windows note: use **PowerShell** (not the old Command Prompt) for everything
-> in this README. The `.sh` scripts and `curl … | sh` lines below are for
-> macOS/Linux only — Windows equivalents are given inline.
-
----
-
-## Prerequisites
-
-1. **Node.js 22.19.0+** — see Step 0 above. <https://nodejs.org>
-2. **[uv](https://docs.astral.sh/uv/)** — runs the Python helper scripts.
-   - macOS/Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh`
-   - Windows (PowerShell): `irm https://astral.sh/uv/install.ps1 | iex`
-3. **R and/or Stata** — only if you use those analysis skills.
-4. **Zotero desktop** — only for `lit-search`. Default library path
-   `~/Zotero/zotero.sqlite` (on Windows, `%USERPROFILE%\Zotero\zotero.sqlite`).
-5. **An [OpenRouter](https://openrouter.ai) account + API key** — this is what
-   you pay per token. Add a few dollars of credit to start.
-
----
-
-## Install
-
-Two commands. This package **bundles its extensions**, so installing it pulls the
-skills *and* web-access + ask-user-question + plan-mode along with it:
-
-```bash
-npm install -g @earendil-works/pi-coding-agent@latest   # the `pi` command
+npm install -g @earendil-works/pi-coding-agent@latest
 pi install git:github.com/nealcaren/pi-quant-toolkit@main
 ```
 
-> **macOS `EACCES` error?** If `npm install -g` fails with a permissions error,
-> your global npm folder is a system path. Don't `sudo`. Either install Node via
-> Homebrew/nvm (which fixes the ownership), or point npm at a user-owned folder:
-> `npm config set prefix ~/.npm-global` and add `~/.npm-global/bin` to your PATH.
+**"undici" / `markAsUncloneable` crash on startup** — your Node.js is too old.
+Pi needs **22.19+**. Reinstall the 22 LTS from [nodejs.org](https://nodejs.org),
+open a new terminal, and try again.
 
-Then connect OpenRouter (this is what you pay per token, via OAuth or a key):
+**Tool "…" conflicts errors** — you're running `pi` from *inside* the toolkit's
+own source folder. Run it from your project folder instead.
 
-```bash
-pi   # then run:  /login openrouter
-# ...or (macOS/Linux):
-export OPENROUTER_API_KEY=sk-or-...
-```
-
-```powershell
-# ...or (Windows PowerShell) — persists to future sessions:
-setx OPENROUTER_API_KEY "sk-or-..."
-# then open a NEW terminal so the variable is picked up
-```
-
-> **Run the setup script** instead of the two commands above if you prefer:
-> - macOS/Linux: `./setup.sh`
-> - Windows (PowerShell): `./setup.ps1` — if blocked by execution policy, run
->   `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` first.
->
-> Both do the same two installs plus print these next steps.
-
-<details>
-<summary>If a bundled extension doesn't load</summary>
-
-Check loaded extensions with `/extensions` inside pi. If one is missing, install
-it explicitly:
-
+**An extension didn't load** — check with `/extensions` inside pi, then:
 ```bash
 pi install npm:pi-web-access
 pi install npm:@juicesharp/rpiv-ask-user-question
 pi install npm:@plannotator/pi-extension
 ```
+
+**Run read-only** (no edits or commands) for a task:
+`pi --tools read,grep,find,ls`
+
+**Change your default model** anytime with `/model` inside pi, or by editing
+`~/.pi/agent/settings.json`.
+
 </details>
-
-## Recommended extensions
-
-Pi ships with a deliberately minimal core (`read`, `write`, `edit`, `bash`,
-`grep`, `find`, `ls`) — no web access. The setup script adds two extensions that
-matter for research work:
-
-- **`pi-web-access`** — adds `web_search` and web/PDF fetching. Zero-config (uses
-  Exa, no API key). Lets the agent look things up and read papers/pages by URL,
-  which complements the OpenAlex/Crossref lookups in `lit-search`.
-- **`rpiv-ask-user-question`** — makes the agent ask you a structured question at
-  decision points instead of guessing. Helps the cheap default model respect the
-  "confirm before searching / before adding to Zotero" checkpoints in the skills.
-- **`@plannotator/pi-extension`** — adds a **plan mode**: the agent drafts a plan
-  you can review (and edit) before it starts executing. Especially helpful for
-  multi-step analysis on the cheap model — you catch a wrong turn before it runs,
-  not after. Trigger it when you want the agent to think before acting.
-
-All three are optional — the skills work without them — but they noticeably
-improve the experience on a budget model.
-
----
-
-## Which model to use
-
-This bundle assumes two OpenRouter models — a cheap default for everyday work and
-a stronger one for hard analysis:
-
-| Role | Model | When |
-|------|-------|------|
-| **Default (cheap)** | `deepseek/deepseek-v4-flash-0731` | Literature search, adding to Zotero, project setup, routine coding |
-| **Escalate (smarter)** | `deepseek/deepseek-v4-pro` | Tricky econometrics, debugging a failing model, careful specification work |
-
-```bash
-# start cheap
-pi --provider openrouter --model deepseek/deepseek-v4-flash-0731
-
-# switch models mid-session when you hit something hard
-/model deepseek/deepseek-v4-pro
-```
-
-Heads-up: these skills were originally written and tuned against Claude models.
-They work on DeepSeek, but the Flash tier can stumble on the most involved
-analysis steps — that's what the escalate model is for. Watch your OpenRouter
-usage; agentic coding is cheap per action but token-hungry per session.
-
----
-
-## Using it
-
-Start Pi in your project directory and just describe the task — Pi loads the
-matching skill automatically:
-
-- *"Set up a new quantitative project for my dissertation chapter."* → `project-scaffold`
-- *"Run a difference-in-differences on this panel in R."* → `r-analyst`
-- *"Find recent work on protest and social media, then add the good ones to my Zotero 'Dissertation' collection."* → `lit-search`
-
-### Adding to Zotero — read this once
-
-`lit-search` writes references **directly into your Zotero database**. So:
-
-- **Quit Zotero completely before adding items.** The script refuses to write
-  while Zotero is open (the database is locked), to protect your library.
-- It takes a **timestamped backup** of `zotero.sqlite` before its first write
-  (look for `zotero.sqlite.pi-backup-*` next to your library if you ever need it).
-- New references appear the next time you open Zotero and sync up normally.
-- Reading your library (dedup checks, listing collections) is safe while Zotero
-  is open; only *adding* needs it closed.
-
----
-
-## A note on safety
-
-Pi runs its tools **without asking permission first** — when the agent decides to
-run a shell command or edit a file, it just does it. There's no sandbox by
-default. That's normal for coding agents, but worth understanding:
-
-- **Work in your project directory**, not your home folder or system files.
-- **Skim what it's about to do.** The agent shows the commands it runs; if
-  something looks destructive (deleting files, `sudo`, anything outside your
-  project), stop it (Esc) and redirect.
-- **Use version control.** `git init` your analysis project so any unwanted change
-  is easy to undo.
-- The `lit-search` Zotero step is the one place the agent writes outside your
-  project — it edits your Zotero library, but only through the guarded script
-  (Zotero must be closed, and it backs up the database first).
-
-If you'd rather run read-only for a task (no editing or shell), start Pi with a
-restricted tool set: `pi --tools read,grep,find,ls`.
 
 ## License
 

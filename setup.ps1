@@ -1,50 +1,60 @@
-# One-time setup for the pi-quant-toolkit (Windows / PowerShell).
-# Prereqs you must install first: Node.js 20+, uv, and (for lit-search) Zotero.
-# Run in PowerShell:  ./setup.ps1
-# If blocked by execution policy, run once:
-#   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+# One-command setup for the pi-quant-toolkit (Windows / PowerShell).
+# Safe to run straight from the web:
+#   irm https://raw.githubusercontent.com/nealcaren/pi-quant-toolkit/main/setup.ps1 | iex
+# Requires Node.js 22.19+ installed first (see the README).
 $ErrorActionPreference = "Stop"
 
-# Where this toolkit lives once hosted — edit before sharing with students.
 $PKG = "git:github.com/nealcaren/pi-quant-toolkit@main"
+$CheapModel = "deepseek/deepseek-v4-flash-0731"
 
-# --- Node version guard: Pi requires Node >= 22.19.0 ---------------------
+# 1. Check Node.js is new enough (Pi needs 22.19+).
 try { $nodeMajor = [int](node -p 'process.versions.node.split(".")[0]') } catch { $nodeMajor = 0 }
 if ($nodeMajor -lt 22) {
-  Write-Host "ERROR: Pi needs Node.js 22.19.0 or newer. You have $(try { node --version } catch { 'no node' })."
-  Write-Host "       Install Node 22 (see README Step 0), then re-run this script."
-  Write-Host "       winget install OpenJS.NodeJS.LTS   (then open a new terminal)"
+  Write-Host "ERROR: Pi needs Node.js 22.19 or newer. You have: $(try { node --version } catch { 'no Node.js found' })."
+  Write-Host "       Install Node.js 22 from https://nodejs.org (pick the '22 LTS' button), then run this again."
   exit 1
 }
-# ------------------------------------------------------------------------
 
-Write-Host "==> Installing Pi (the coding agent)"
+# 2. Install the Pi agent.
+Write-Host "==> Installing Pi (the coding assistant)..."
 npm install -g '@earendil-works/pi-coding-agent@latest'
 
-Write-Host "==> Installing the quant-social-science toolkit (skills + bundled extensions)"
-# This package bundles its extensions (pi-web-access, ask-user-question,
-# plannotator), so this single install brings them along.
+# 3. Install this toolkit (skills + bundled web-search/ask/plan extensions).
+Write-Host "==> Installing the quant toolkit..."
 pi install $PKG
 
-# --- Fallback -------------------------------------------------------------
-# If an extension does not load after the install above (check with /extensions
-# inside pi), install them explicitly:
-#   pi install npm:pi-web-access
-#   pi install npm:@juicesharp/rpiv-ask-user-question
-#   pi install npm:@plannotator/pi-extension
-# --------------------------------------------------------------------------
+# 4. Point Pi at the cheap model by default (only if you haven't chosen one).
+Write-Host "==> Setting the default model..."
+$node = @'
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const model = process.argv[2];
+const p = path.join(os.homedir(), ".pi", "agent", "settings.json");
+let s = {};
+try { s = JSON.parse(fs.readFileSync(p, "utf8")); } catch {}
+if (s.defaultModel) {
+  console.log(`    (kept your existing default: ${s.defaultModel})`);
+} else {
+  s.defaultProvider = "openrouter";
+  s.defaultModel = model;
+  fs.mkdirSync(path.dirname(p), { recursive: true });
+  fs.writeFileSync(p, JSON.stringify(s, null, 2) + "\n");
+  console.log(`    default model set to ${model}`);
+}
+'@
+$node | node - $CheapModel
 
 Write-Host @"
 
-Done. Two things left, by hand:
+==> All set! One thing left to do by hand:
 
-  1. Connect OpenRouter (this is what you pay per token):
-        pi        # then run:  /login openrouter
-     or:  `$env:OPENROUTER_API_KEY = "sk-or-..."
+  Start Pi and connect your OpenRouter account (this is what pays per use):
 
-  2. Start Pi on the cheap default model:
-        pi --provider openrouter --model deepseek/deepseek-v4-flash-0731
-     Switch to the smarter model for hard analysis:
-        /model deepseek/deepseek-v4-pro
+      pi
+      /login openrouter        <- type this once Pi is open
+
+  After that, just run  pi  in any project folder and describe your task.
+  Need more power for a hard analysis?  Type:  /model deepseek/deepseek-v4-pro
 
 "@
