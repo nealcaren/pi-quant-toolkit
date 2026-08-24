@@ -67,6 +67,8 @@ sign in. Done — you only do this once.
 4. Describe what you want. Pi picks the right tool automatically:
 
 > *"Set up a new project for my dissertation chapter."*
+> *"Get the replication data for this paper (here's the DOI) and file it."*
+> *"Pull GSS and set up a project to analyze it."*
 > *"Run a difference-in-differences on this panel in R."*
 > *"Find recent work on protest and social media and add the best to my Zotero."*
 
@@ -79,6 +81,7 @@ session: `/model openrouter/deepseek/deepseek-v4-pro`.
 
 | Tool | What it does |
 |------|--------------|
+| `data-acquisition` | Gets your data reproducibly — replication packages from a DOI/Dataverse, plus IPUMS, Census/ACS, GSS, ANES, ICPSR, OSF — with provenance and checksums |
 | `r-analyst` | Statistical analysis in R (DiD, IV, matching, panel, etc.) |
 | `stata-analyst` | The same, in Stata |
 | `text-analyst` | Text analysis (topic models, sentiment, classification) in R or Python |
@@ -86,6 +89,9 @@ session: `/model openrouter/deepseek/deepseek-v4-pro`.
 | `lit-search` | Finds papers via OpenAlex/Crossref and files them into Zotero |
 | `tidy-r` | Modern-tidyverse conventions so your R code isn't dated base R |
 | `review-r` | Reads your R code and reports problems (doesn't change it) |
+| `review-stata` | The same read-only review for Stata `.do` files |
+| `review-py` | The same for Python scripts/notebooks (pandas, statsmodels, sklearn, text pipelines) |
+| `repro-package` | Rebuilds your analysis from raw in a clean session and assembles a submission-ready replication archive |
 
 ---
 
@@ -98,8 +104,15 @@ checked.** Two habits that catch most mistakes:
 
 > *"Review this R script for correctness and reproducibility."*
 
-That runs `review-r`, which reports problems (wrong clustering, non-reproducible
-paths, numerical bugs) **without changing your code**. You decide what to fix.
+That runs `review-r` (or `review-stata` / `review-py` for those languages), which
+reports problems — wrong clustering, non-reproducible paths, numerical and
+missing-value bugs, and numbers in the write-up that don't match the code —
+**without changing your code**. You decide what to fix.
+
+When the analysis is finished and you're heading for submission, say *"build a
+replication package"* to run `repro-package`: it rebuilds every table and figure
+from raw data in a clean session and assembles the archive (master script, README,
+codebook, data-access statement) journals now ask for.
 
 **2. Review with a *stronger, different* model than wrote the code.** A model
 checking its own work tends to bless its own mistakes. Before reviewing, switch:

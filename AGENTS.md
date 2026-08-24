@@ -16,6 +16,12 @@ capture**. Follow these rules on top of whatever a loaded skill says.
   model doesn't converge or an assumption is violated, say so.
 - **Show the specification.** When you fit a model, state the estimator, sample,
   and key choices so the researcher can check them.
+- **Raw data is immutable.** Anything under `data/raw/` is never edited, recoded,
+  or subset in place — cleaning reads raw and writes `data/processed/`. Acquisition
+  (the `data-acquisition` skill) lands raw data with a `PROVENANCE.md` (source DOI,
+  version, retrieval date, per-file checksums); keep that record intact. Never
+  commit restricted microdata or large binaries to git — add them to `.gitignore`
+  and keep only the provenance tracked.
 
 ## Literature + Zotero
 
