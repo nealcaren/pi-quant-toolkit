@@ -6,8 +6,18 @@ set -euo pipefail
 # Where this toolkit lives once hosted — edit before sharing with students.
 PKG="git:github.com/nealcaren/pi-quant-toolkit@main"
 
+# --- Node version guard: Pi requires Node >= 22.19.0 ---------------------
+NODE_MAJOR="$(node -p 'process.versions.node.split(".")[0]' 2>/dev/null || echo 0)"
+if [ "$NODE_MAJOR" -lt 22 ]; then
+  echo "ERROR: Pi needs Node.js 22.19.0 or newer. You have $(node --version 2>/dev/null || echo 'no node')."
+  echo "       Install Node 22 (see README Step 0), then re-run this script."
+  echo "       With nvm:  nvm install 22 && nvm alias default 22   (then open a new terminal)"
+  exit 1
+fi
+# ------------------------------------------------------------------------
+
 echo "==> Installing Pi (the coding agent)"
-npm install -g @earendil-works/pi-coding-agent
+npm install -g @earendil-works/pi-coding-agent@latest
 
 echo "==> Installing the quant-social-science toolkit (skills + bundled extensions)"
 # This package bundles its extensions (pi-web-access, ask-user-question,

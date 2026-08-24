@@ -25,35 +25,41 @@ These are analysis + capture tools. There are no writing skills in this bundle.
 
 ## Step 0 — install Node.js (do this first)
 
-Everything below needs **Node.js 20+**. Nothing works until `node --version`
-prints `v20` or higher in a fresh terminal. This is the step beginners skip, so
-install it before anything else.
+Everything below needs **Node.js 22.19.0 or newer** (the Pi agent refuses to run
+on older Node — you'll see an `undici` / `markAsUncloneable` crash). Nothing
+works until `node --version` prints `v22.19` or higher in a fresh terminal. This
+is the step beginners skip, so install it before anything else.
 
 **macOS**
 
 ```bash
 # Option A — Homebrew (recommended if you have it)
-brew install node
+brew install node@22
 
-# Option B — the installer from https://nodejs.org (pick the LTS build)
+# Option B — the installer from https://nodejs.org (pick the 22 LTS build)
 ```
 
 **Windows**
 
 ```powershell
 # Option A — winget (built into Windows 10/11)
-winget install OpenJS.NodeJS.LTS
+winget install OpenJS.NodeJS.LTS   # ships Node 22 LTS
 
-# Option B — the installer from https://nodejs.org (pick the LTS build).
+# Option B — the installer from https://nodejs.org (pick the 22 LTS build).
 # During install, leave "Add to PATH" checked.
 ```
 
 Then **close and reopen your terminal** and confirm:
 
 ```
-node --version    # should print v20.x or higher
+node --version    # must print v22.19.0 or higher
 npm --version
 ```
+
+> Already have an older Node (e.g. v20)? Upgrade to 22. If you use **nvm**:
+> `nvm install 22 && nvm alias default 22`, then open a new terminal. Note that
+> nvm keeps global packages *per Node version*, so after switching you must
+> reinstall Pi (Step "Install" below) under Node 22.
 
 > Windows note: use **PowerShell** (not the old Command Prompt) for everything
 > in this README. The `.sh` scripts and `curl … | sh` lines below are for
@@ -63,7 +69,7 @@ npm --version
 
 ## Prerequisites
 
-1. **Node.js 20+** — see Step 0 above. <https://nodejs.org>
+1. **Node.js 22.19.0+** — see Step 0 above. <https://nodejs.org>
 2. **[uv](https://docs.astral.sh/uv/)** — runs the Python helper scripts.
    - macOS/Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh`
    - Windows (PowerShell): `irm https://astral.sh/uv/install.ps1 | iex`
@@ -81,7 +87,7 @@ Two commands. This package **bundles its extensions**, so installing it pulls th
 skills *and* web-access + ask-user-question + plan-mode along with it:
 
 ```bash
-npm install -g @earendil-works/pi-coding-agent          # the `pi` command
+npm install -g @earendil-works/pi-coding-agent@latest   # the `pi` command
 pi install git:github.com/nealcaren/pi-quant-toolkit@main
 ```
 
