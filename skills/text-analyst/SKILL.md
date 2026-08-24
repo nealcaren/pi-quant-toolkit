@@ -64,6 +64,12 @@ This agent supports both **R** and **Python**. Each has strengths:
 
 **Output**: Design memo with research question, method selection, and language choice.
 
+> **Method not in the technique menu?** If the analysis calls for a method without
+> a guide here (e.g. a specific mixture/clustering model, SEM on extracted
+> features, a niche NLP package), invoke the **`method-scout`** skill: find the
+> maintained package via the ecosystem's index, follow its docs/vignette, and
+> benchmark against its example before running — don't improvise the API.
+
 > **Pause**: Confirm design with user before corpus preparation.
 
 ---
