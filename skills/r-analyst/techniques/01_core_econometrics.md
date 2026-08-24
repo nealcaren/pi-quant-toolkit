@@ -189,7 +189,7 @@ The coefficient $\beta_3$ is the DiD estimate.
 data(base_did, package = "fixest")
 
 # Create group indicators
-base_did <- base_did %>%
+base_did <- base_did |>
   mutate(
     treated_group = as.numeric(id <= 54),  # First half are treated
     post_period = as.numeric(period >= 5)   # Treatment at period 5
@@ -822,8 +822,8 @@ head(lalonde)
 # ...
 
 # Check initial imbalance
-lalonde %>%
-  group_by(treat) %>%
+lalonde |>
+  group_by(treat) |>
   summarise(
     mean_age = mean(age),
     mean_educ = mean(educ),
@@ -1179,7 +1179,7 @@ wald(es_model, keep = pre_coefs)
 data(base_stagg, package = "fixest")
 
 placebo_results <- lapply(c(-3, -2, -1, 0, 1, 2, 3), function(shift) {
-  base_stagg_placebo <- base_stagg %>%
+  base_stagg_placebo <- base_stagg |>
     mutate(
       fake_treat_year = year_treated + shift,
       fake_treated = year >= fake_treat_year & !is.na(fake_treat_year)

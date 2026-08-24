@@ -82,8 +82,8 @@ modelsummary(
 ```r
 library(ggplot2)
 
-trends_data <- analysis_data %>%
-  group_by(year, treatment_group) %>%
+trends_data <- analysis_data |>
+  group_by(year, treatment_group) |>
   summarise(mean_outcome = mean(outcome, na.rm = TRUE),
             se = sd(outcome, na.rm = TRUE) / sqrt(n()))
 
@@ -118,8 +118,8 @@ p_event <- iplot(event_study_model,
                   ylab = "Coefficient Estimate")
 
 # Or custom ggplot
-event_coefs <- broom::tidy(event_study_model, conf.int = TRUE) %>%
-  filter(str_detect(term, "time_to_treat")) %>%
+event_coefs <- broom::tidy(event_study_model, conf.int = TRUE) |>
+  filter(str_detect(term, "time_to_treat")) |>
   mutate(time = as.numeric(str_extract(term, "-?\\d+")))
 
 p_event <- ggplot(event_coefs, aes(x = time, y = estimate)) +

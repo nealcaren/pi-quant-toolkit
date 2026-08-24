@@ -59,7 +59,7 @@ summary(main_model, cluster = ~unit + year)
 **Pre-treatment effects (for DiD/Event Study):**
 ```r
 # Should see no effect before treatment
-pre_data <- data %>% filter(year < treatment_year)
+pre_data <- data |> filter(year < treatment_year)
 placebo_pre <- feols(outcome ~ fake_treatment | unit + year,
                      cluster = ~unit, data = pre_data)
 ```
@@ -67,7 +67,7 @@ placebo_pre <- feols(outcome ~ fake_treatment | unit + year,
 **Fake treatment timing:**
 ```r
 # Assign treatment X years earlier—should find no effect
-data <- data %>%
+data <- data |>
   mutate(fake_treated = treated_post & year >= (treatment_year - 3))
 
 placebo_timing <- feols(outcome ~ fake_treated | unit + year,
@@ -93,8 +93,8 @@ sapply(analysis_data, function(x) mean(is.na(x))) |>
   head(10)
 
 # Missingness by key variables
-analysis_data %>%
-  group_by(treatment) %>%
+analysis_data |>
+  group_by(treatment) |>
   summarise(across(everything(), ~mean(is.na(.))))
 ```
 
@@ -165,7 +165,7 @@ data$outcome_w <- Winsorize(data$outcome, probs = c(0.01, 0.99))
 robust_winsor <- feols(outcome_w ~ treatment | fe, cluster = ~cluster_var, data = data)
 
 # Drop extreme observations
-data_trimmed <- data %>% filter(outcome > quantile(outcome, 0.01) &
+data_trimmed <- data |> filter(outcome > quantile(outcome, 0.01) &
                                  outcome < quantile(outcome, 0.99))
 robust_trim <- feols(outcome ~ treatment | fe, cluster = ~cluster_var, data = data_trimmed)
 ```
@@ -229,8 +229,8 @@ plot(het_effects)
 **Attrition Analysis:**
 ```r
 # Document attrition rates by wave
-attrition_table <- data %>%
-  group_by(wave) %>%
+attrition_table <- data |>
+  group_by(wave) |>
   summarise(n = n_distinct(id),
             pct_remaining = n / first(n) * 100)
 
@@ -265,9 +265,9 @@ re_model <- plm(outcome ~ treatment + covariates, model = "random",
 phtest(fe_model, re_model)  # p < 0.05 suggests FE preferred
 
 # Within-between decomposition (correlated random effects)
-data <- data %>%
-  group_by(id) %>%
-  mutate(across(c(treatment, covariates), list(between = ~mean(., na.rm = TRUE)))) %>%
+data <- data |>
+  group_by(id) |>
+  mutate(across(c(treatment, covariates), list(between = ~mean(., na.rm = TRUE)))) |>
   mutate(across(c(treatment, covariates),
                 list(within = ~. - mean(., na.rm = TRUE)), .names = "{.col}_within"))
 ```

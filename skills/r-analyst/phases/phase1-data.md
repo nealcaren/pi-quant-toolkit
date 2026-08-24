@@ -92,7 +92,7 @@ ggplot(data, aes(x = outcome)) +
 table(data$treatment, useNA = "ifany")
 
 # Check for impossible values
-data %>% filter(age < 0 | age > 120)
+data |> filter(age < 0 | age > 120)
 ```
 
 ### 4. Visualize Key Relationships
@@ -102,9 +102,9 @@ Create visualizations relevant to the research design:
 **For DiD/Panel:**
 ```r
 # Trends over time by treatment group
-data %>%
-  group_by(time, treatment_group) %>%
-  summarise(mean_outcome = mean(outcome, na.rm = TRUE)) %>%
+data |>
+  group_by(time, treatment_group) |>
+  summarise(mean_outcome = mean(outcome, na.rm = TRUE)) |>
   ggplot(aes(x = time, y = mean_outcome, color = treatment_group)) +
   geom_line() +
   geom_vline(xintercept = treatment_time, linetype = "dashed") +
@@ -157,7 +157,7 @@ Define and document the final analysis sample:
 
 ```r
 # Define sample restrictions
-analysis_data <- data %>%
+analysis_data <- data |>
   filter(
     !is.na(outcome),
     !is.na(treatment),

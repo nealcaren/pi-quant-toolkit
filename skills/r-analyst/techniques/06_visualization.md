@@ -438,8 +438,8 @@ model3 <- lm(mpg ~ wt + hp + am + cyl + disp, data = mtcars)
 
 # Extract and combine coefficients
 extract_coefs <- function(model, model_name) {
-  tidy(model, conf.int = TRUE) %>%
-    filter(term != "(Intercept)") %>%
+  tidy(model, conf.int = TRUE) |>
+    filter(term != "(Intercept)") |>
     mutate(model = model_name)
 }
 
@@ -481,8 +481,8 @@ library(ggrepel)
 model <- lm(mpg ~ wt + hp + drat + qsec + am + gear + carb, data = mtcars)
 
 # Extract coefficients
-coef_df <- tidy(model, conf.int = TRUE) %>%
-  filter(term != "(Intercept)") %>%
+coef_df <- tidy(model, conf.int = TRUE) |>
+  filter(term != "(Intercept)") |>
   mutate(
     significant = p.value < 0.05,
     term_label = case_when(
@@ -495,7 +495,7 @@ coef_df <- tidy(model, conf.int = TRUE) %>%
       term == "carb" ~ "Number of Carburetors",
       TRUE ~ term
     )
-  ) %>%
+  ) |>
   arrange(estimate)
 
 # Ordered coefficient plot
@@ -588,8 +588,8 @@ model <- feols(
 )
 
 # Extract event study coefficients
-event_coefs <- broom::tidy(model, conf.int = TRUE) %>%
-  filter(str_detect(term, "period::")) %>%
+event_coefs <- broom::tidy(model, conf.int = TRUE) |>
+  filter(str_detect(term, "period::")) |>
   mutate(
     period = as.numeric(str_extract(term, "[0-9]+")),
     significant = conf.low > 0 | conf.high < 0
@@ -599,7 +599,7 @@ event_coefs <- broom::tidy(model, conf.int = TRUE) %>%
 event_coefs <- bind_rows(
   event_coefs,
   tibble(period = 5, estimate = 0, conf.low = 0, conf.high = 0, significant = FALSE)
-) %>%
+) |>
   arrange(period)
 
 # Create publication-quality event study plot
@@ -662,8 +662,8 @@ event_data <- tibble(
 )
 
 # Summarize by group and time
-event_summary <- event_data %>%
-  group_by(group, rel_time) %>%
+event_summary <- event_data |>
+  group_by(group, rel_time) |>
   summarise(
     mean_y = mean(y),
     se = sd(y) / sqrt(n()),
@@ -757,22 +757,22 @@ rd_data <- tibble(
 
 # Create bins
 n_bins <- 20
-rd_data <- rd_data %>%
+rd_data <- rd_data |>
   mutate(
     bin = cut(x, breaks = n_bins, labels = FALSE),
     bin_center = (cut(x, breaks = n_bins, labels = FALSE) - 0.5) / n_bins * 2 - 1
   )
 
 # Calculate bin means
-bin_means <- rd_data %>%
-  group_by(bin) %>%
+bin_means <- rd_data |>
+  group_by(bin) |>
   summarise(
     bin_center = mean(x),
     mean_y = mean(y),
     se = sd(y) / sqrt(n()),
     n = n(),
     .groups = "drop"
-  ) %>%
+  ) |>
   mutate(treatment = as.numeric(bin_center >= 0))
 
 # RD plot with binned means
@@ -993,13 +993,13 @@ library(modelsummary)
 library(dplyr)
 
 # Create treatment indicator in mtcars (e.g., based on transmission)
-mtcars_bal <- mtcars %>%
+mtcars_bal <- mtcars |>
   mutate(treatment = factor(am, labels = c("Automatic", "Manual")))
 
 # Balance table comparing treatment groups
 datasummary_balance(
   ~ treatment,
-  data = mtcars_bal %>% select(mpg, wt, hp, disp, qsec, treatment),
+  data = mtcars_bal |> select(mpg, wt, hp, disp, qsec, treatment),
   dinm = TRUE,                    # Show difference-in-means
   dinm_statistic = "p.value",    # Show p-values
   title = "Table 1: Balance Check by Transmission Type"
@@ -1013,8 +1013,8 @@ library(modelsummary)
 library(dplyr)
 
 # Using diamonds dataset grouped by cut
-diamonds_subset <- diamonds %>%
-  select(price, carat, depth, table, cut) %>%
+diamonds_subset <- diamonds |>
+  select(price, carat, depth, table, cut) |>
   filter(cut %in% c("Fair", "Good", "Very Good", "Premium", "Ideal"))
 
 # Summary by cut quality
@@ -1041,7 +1041,7 @@ library(tidyr)
 library(gt)
 
 # Create formatted summary statistics
-summary_table <- mtcars %>%
+summary_table <- mtcars |>
   summarise(
     across(c(mpg, wt, hp, disp, qsec),
            list(
@@ -1050,11 +1050,11 @@ summary_table <- mtcars %>%
              Min = ~min(.),
              Max = ~max(.)
            ))
-  ) %>%
+  ) |>
   pivot_longer(everything(),
                names_to = c("Variable", "Statistic"),
-               names_sep = "_") %>%
-  pivot_wider(names_from = Statistic, values_from = value) %>%
+               names_sep = "_") |>
+  pivot_wider(names_from = Statistic, values_from = value) |>
   mutate(
     Variable = case_when(
       Variable == "mpg" ~ "Miles per Gallon",
@@ -1066,20 +1066,20 @@ summary_table <- mtcars %>%
   )
 
 # Create gt table
-summary_table %>%
-  gt() %>%
+summary_table |>
+  gt() |>
   tab_header(
     title = "Table 1: Summary Statistics",
     subtitle = "Motor Trend Car Road Tests (1974)"
-  ) %>%
-  fmt_number(columns = c(Mean, SD, Min, Max), decimals = 2) %>%
+  ) |>
+  fmt_number(columns = c(Mean, SD, Min, Max), decimals = 2) |>
   cols_label(
     Variable = "",
     Mean = "Mean",
     SD = "Std. Dev.",
     Min = "Minimum",
     Max = "Maximum"
-  ) %>%
+  ) |>
   tab_source_note("N = 32 automobiles")
 ```
 
@@ -1181,8 +1181,8 @@ library(ggrepel)
 library(dplyr)
 
 # Label extreme points in mtcars
-mtcars_labeled <- mtcars %>%
-  tibble::rownames_to_column("car") %>%
+mtcars_labeled <- mtcars |>
+  tibble::rownames_to_column("car") |>
   mutate(label = ifelse(mpg > 30 | mpg < 15 | wt > 5, car, ""))
 
 ggplot(mtcars_labeled, aes(x = wt, y = mpg)) +

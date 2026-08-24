@@ -237,9 +237,9 @@ cat("Logit AME:      ", round(ame_logit$estimate, 4), "\n")
 ```r
 # 1. Check for separation
 # Look for predictors that perfectly predict outcome
-base_did %>%
-  group_by(x1_category) %>%
-  summarise(mean_y = mean(y_binary), n = n()) %>%
+base_did |>
+  group_by(x1_category) |>
+  summarise(mean_y = mean(y_binary), n = n()) |>
   filter(mean_y %in% c(0, 1))  # Perfect prediction = separation
 
 # 2. If separation detected:
@@ -693,9 +693,9 @@ etable(mod_logit, fitstat = ~ pr2 + ll)
 base_did$pred_prob <- predict(mod_lpm, type = "response")
 
 # Bin predictions and compare to actual event rate
-base_did %>%
-  mutate(pred_bin = cut(pred_prob, breaks = seq(0, 1, 0.1))) %>%
-  group_by(pred_bin) %>%
+base_did |>
+  mutate(pred_bin = cut(pred_prob, breaks = seq(0, 1, 0.1))) |>
+  group_by(pred_bin) |>
   summarise(
     n = n(),
     actual_rate = mean(y_binary),

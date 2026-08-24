@@ -492,14 +492,14 @@ head(austen_books)
 #> ...
 
 # Tokenize to one word per row
-tidy_austen <- austen_books %>%
-  group_by(book) %>%
+tidy_austen <- austen_books |>
+  group_by(book) |>
   mutate(
     linenumber = row_number(),
     chapter = cumsum(str_detect(text, regex("^chapter [\\divxlc]",
                                             ignore_case = TRUE)))
-  ) %>%
-  ungroup() %>%
+  ) |>
+  ungroup() |>
   unnest_tokens(word, text)
 
 head(tidy_austen)
@@ -524,18 +524,18 @@ Three main sentiment lexicons are available:
 # After download, they're cached locally
 
 # View available lexicons
-get_sentiments("afinn") %>% head()
+get_sentiments("afinn") |> head()
 #>   word       value
 #> 1 abandon       -2
 #> 2 abandoned     -2
 #> 3 abandons      -2
 
-get_sentiments("bing") %>% head()
+get_sentiments("bing") |> head()
 #>   word        sentiment
 #> 1 2-faces     negative
 #> 2 abnormal    negative
 
-get_sentiments("nrc") %>% head()
+get_sentiments("nrc") |> head()
 #>   word        sentiment
 #> 1 abacus      trust
 #> 2 abandon     fear
@@ -546,9 +546,9 @@ get_sentiments("nrc") %>% head()
 
 ```r
 # Join with AFINN lexicon
-afinn_sentiment <- tidy_austen %>%
-  inner_join(get_sentiments("afinn"), by = "word") %>%
-  group_by(book, index = linenumber %/% 80) %>%  # 80-line chunks
+afinn_sentiment <- tidy_austen |>
+  inner_join(get_sentiments("afinn"), by = "word") |>
+  group_by(book, index = linenumber %/% 80) |>  # 80-line chunks
   summarize(
     sentiment = sum(value),
     n_words = n(),
@@ -556,8 +556,8 @@ afinn_sentiment <- tidy_austen %>%
   )
 
 # Plot sentiment trajectory for Pride & Prejudice
-afinn_sentiment %>%
-  filter(book == "Pride & Prejudice") %>%
+afinn_sentiment |>
+  filter(book == "Pride & Prejudice") |>
   ggplot(aes(index, sentiment)) +
   geom_col(show.legend = FALSE) +
   labs(
@@ -567,8 +567,8 @@ afinn_sentiment %>%
   )
 
 # Summary statistics by book
-afinn_sentiment %>%
-  group_by(book) %>%
+afinn_sentiment |>
+  group_by(book) |>
   summarize(
     mean_sentiment = mean(sentiment),
     sd_sentiment = sd(sentiment),
@@ -588,14 +588,14 @@ afinn_sentiment %>%
 
 ```r
 # Calculate net sentiment (positive - negative)
-bing_sentiment <- tidy_austen %>%
-  inner_join(get_sentiments("bing"), by = "word") %>%
-  count(book, index = linenumber %/% 80, sentiment) %>%
-  pivot_wider(names_from = sentiment, values_from = n, values_fill = 0) %>%
+bing_sentiment <- tidy_austen |>
+  inner_join(get_sentiments("bing"), by = "word") |>
+  count(book, index = linenumber %/% 80, sentiment) |>
+  pivot_wider(names_from = sentiment, values_from = n, values_fill = 0) |>
   mutate(net_sentiment = positive - negative)
 
 # Compare all books
-bing_sentiment %>%
+bing_sentiment |>
   ggplot(aes(index, net_sentiment, fill = book)) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~book, ncol = 2, scales = "free_x") +
@@ -610,10 +610,10 @@ bing_sentiment %>%
 
 ```r
 # Analyze emotions in Pride & Prejudice
-nrc_emotions <- tidy_austen %>%
-  filter(book == "Pride & Prejudice") %>%
-  inner_join(get_sentiments("nrc"), by = "word") %>%
-  filter(!sentiment %in% c("positive", "negative")) %>%
+nrc_emotions <- tidy_austen |>
+  filter(book == "Pride & Prejudice") |>
+  inner_join(get_sentiments("nrc"), by = "word") |>
+  filter(!sentiment %in% c("positive", "negative")) |>
   count(sentiment, sort = TRUE)
 
 nrc_emotions
@@ -628,8 +628,8 @@ nrc_emotions
 #> 8 disgust     567
 
 # Plot emotional profile
-nrc_emotions %>%
-  mutate(sentiment = reorder(sentiment, n)) %>%
+nrc_emotions |>
+  mutate(sentiment = reorder(sentiment, n)) |>
   ggplot(aes(n, sentiment)) +
   geom_col() +
   labs(
@@ -644,23 +644,23 @@ nrc_emotions %>%
 ```r
 # Compare lexicons on same data
 comparison <- bind_rows(
-  tidy_austen %>%
-    inner_join(get_sentiments("afinn"), by = "word") %>%
-    group_by(book, index = linenumber %/% 80) %>%
-    summarize(sentiment = sum(value), .groups = "drop") %>%
+  tidy_austen |>
+    inner_join(get_sentiments("afinn"), by = "word") |>
+    group_by(book, index = linenumber %/% 80) |>
+    summarize(sentiment = sum(value), .groups = "drop") |>
     mutate(method = "AFINN"),
 
-  tidy_austen %>%
-    inner_join(get_sentiments("bing"), by = "word") %>%
-    count(book, index = linenumber %/% 80, sentiment) %>%
-    pivot_wider(names_from = sentiment, values_from = n, values_fill = 0) %>%
-    mutate(sentiment = positive - negative, method = "Bing") %>%
+  tidy_austen |>
+    inner_join(get_sentiments("bing"), by = "word") |>
+    count(book, index = linenumber %/% 80, sentiment) |>
+    pivot_wider(names_from = sentiment, values_from = n, values_fill = 0) |>
+    mutate(sentiment = positive - negative, method = "Bing") |>
     select(book, index, sentiment, method)
 )
 
 # Correlation between methods
-comparison %>%
-  pivot_wider(names_from = method, values_from = sentiment) %>%
+comparison |>
+  pivot_wider(names_from = method, values_from = sentiment) |>
   summarize(correlation = cor(AFINN, Bing, use = "complete.obs"))
 #> Typically r ~ 0.7-0.8 (lexicons capture similar but not identical signal)
 ```
@@ -684,13 +684,13 @@ library(dplyr)
 library(janeaustenr)
 
 # Count words per book
-book_words <- austen_books() %>%
-  unnest_tokens(word, text) %>%
+book_words <- austen_books() |>
+  unnest_tokens(word, text) |>
   count(book, word, sort = TRUE)
 
 # Calculate total words per book
-total_words <- book_words %>%
-  group_by(book) %>%
+total_words <- book_words |>
+  group_by(book) |>
   summarize(total = sum(n))
 
 book_words <- left_join(book_words, total_words, by = "book")
@@ -703,7 +703,7 @@ head(book_words)
 #> ...
 
 # Calculate TF-IDF
-book_tf_idf <- book_words %>%
+book_tf_idf <- book_words |>
   bind_tf_idf(word, book, n)
 
 head(book_tf_idf)
@@ -718,10 +718,10 @@ head(book_tf_idf)
 
 ```r
 # Top TF-IDF words per book (most distinctive)
-book_tf_idf %>%
-  group_by(book) %>%
-  slice_max(tf_idf, n = 5) %>%
-  ungroup() %>%
+book_tf_idf |>
+  group_by(book) |>
+  slice_max(tf_idf, n = 5) |>
+  ungroup() |>
   select(book, word, tf_idf)
 
 #>   book                word       tf_idf
@@ -744,11 +744,11 @@ book_tf_idf %>%
 library(ggplot2)
 
 # Plot top 10 words per book
-book_tf_idf %>%
-  group_by(book) %>%
-  slice_max(tf_idf, n = 10) %>%
-  ungroup() %>%
-  mutate(word = reorder_within(word, tf_idf, book)) %>%
+book_tf_idf |>
+  group_by(book) |>
+  slice_max(tf_idf, n = 10) |>
+  ungroup() |>
+  mutate(word = reorder_within(word, tf_idf, book)) |>
   ggplot(aes(tf_idf, word, fill = book)) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~book, scales = "free_y") +
@@ -767,14 +767,14 @@ book_tf_idf %>%
 # Create a document-term matrix with TF-IDF weights
 
 # Example: Prepare for classification
-dtm_tfidf <- book_tf_idf %>%
+dtm_tfidf <- book_tf_idf |>
   # Keep only top 1000 words by mean TF-IDF
-  group_by(word) %>%
-  mutate(mean_tfidf = mean(tf_idf)) %>%
-  ungroup() %>%
-  filter(dense_rank(desc(mean_tfidf)) <= 1000) %>%
+  group_by(word) |>
+  mutate(mean_tfidf = mean(tf_idf)) |>
+  ungroup() |>
+  filter(dense_rank(desc(mean_tfidf)) <= 1000) |>
   # Pivot to wide format
-  select(book, word, tf_idf) %>%
+  select(book, word, tf_idf) |>
   pivot_wider(names_from = word, values_from = tf_idf, values_fill = 0)
 
 dim(dtm_tfidf)
@@ -894,7 +894,7 @@ var_imp <- variable_importance(cf)
 var_imp_df <- data.frame(
   variable = colnames(X),
   importance = as.numeric(var_imp)
-) %>%
+) |>
   arrange(desc(importance))
 
 print(var_imp_df)
@@ -1037,7 +1037,7 @@ importance_scores <- rf_reg$variable.importance
 importance_df <- data.frame(
   variable = names(importance_scores),
   importance = importance_scores
-) %>%
+) |>
   arrange(desc(importance))
 
 print(importance_df)

@@ -84,6 +84,34 @@ smarter (slightly pricier) model for that session.
 | `text-analyst` | Text analysis (topic models, sentiment, classification) in R or Python |
 | `project-scaffold` | Sets up a tidy research-project folder for you |
 | `lit-search` | Finds papers via OpenAlex/Crossref and files them into Zotero |
+| `tidy-r` | Modern-tidyverse conventions so your R code isn't dated base R |
+| `review-r` | Reads your R code and reports problems (doesn't change it) |
+
+---
+
+## Always review your code — and switch models to do it
+
+The AI writes code fast, but **you should never trust an analysis you haven't
+checked.** Two habits that catch most mistakes:
+
+**1. Ask for a review.** When a script is done, say:
+
+> *"Review this R script for correctness and reproducibility."*
+
+That runs `review-r`, which reports problems (wrong clustering, non-reproducible
+paths, numerical bugs) **without changing your code** — you decide what to fix.
+
+**2. Review with a *stronger, different* model than wrote the code.** A model
+checking its own work tends to bless its own mistakes. Before reviewing, switch:
+
+```
+/model deepseek/deepseek-v4-pro
+```
+
+Even better, if you have access, review with a **different** model family than
+you wrote with — a fresh set of eyes catches what the original missed. Switch
+back to the cheap model (`/model deepseek/deepseek-v4-flash-0731`) for routine
+work afterward.
 
 ---
 

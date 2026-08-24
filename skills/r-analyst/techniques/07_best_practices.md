@@ -139,7 +139,7 @@ set.seed(12345)
 data(mtcars)
 
 # Create analysis dataset
-analysis_data <- mtcars %>%
+analysis_data <- mtcars |>
   mutate(
     efficiency = mpg / wt,
     high_hp = ifelse(hp > median(hp), 1, 0),
@@ -313,6 +313,11 @@ print(pkg_versions)
 
 ## 4. Data Cleaning with tidyverse
 
+> **Modern conventions:** examples here use the native pipe `|>` (R 4.1+), not
+> the older magrittr `%>%`. For a fuller modern-tidyverse reference — `.by`
+> grouping, `join_by()`, `map_*()` type-stability, tidy selection, and style —
+> load the **`tidy-r`** skill in this toolkit and follow it.
+
 ### When to Use
 
 Use tidyverse patterns when:
@@ -331,9 +336,9 @@ library(tidyr)
 data(mtcars)
 
 # Basic pipeline with mutate, filter, select
-cars_clean <- mtcars %>%
+cars_clean <- mtcars |>
   # Add row names as a column
-  tibble::rownames_to_column("car_name") %>%
+  tibble::rownames_to_column("car_name") |>
 
   # Create new variables
   mutate(
@@ -345,10 +350,10 @@ cars_clean <- mtcars %>%
       hp < 200 ~ "Medium",
       TRUE ~ "High"
     )
-  ) %>%
+  ) |>
 
   # Filter observations
-  filter(!is.na(mpg), cyl %in% c(4, 6, 8)) %>%
+  filter(!is.na(mpg), cyl %in% c(4, 6, 8)) |>
 
   # Select and reorder columns
   select(car_name, mpg, cyl, hp, hp_category, everything())
@@ -369,8 +374,8 @@ cat("Clean data:", nrow(cars_clean), "rows,", ncol(cars_clean), "columns\n")
 
 ```r
 # Summarize by group
-cars_summary <- mtcars %>%
-  group_by(cyl) %>%
+cars_summary <- mtcars |>
+  group_by(cyl) |>
   summarise(
     n_cars = n(),
     mean_mpg = mean(mpg, na.rm = TRUE),
@@ -379,7 +384,7 @@ cars_summary <- mtcars %>%
     min_wt = min(wt, na.rm = TRUE),
     max_wt = max(wt, na.rm = TRUE),
     .groups = "drop"  # Prevents grouping warnings
-  ) %>%
+  ) |>
   arrange(desc(mean_mpg))
 
 print(cars_summary)
@@ -409,13 +414,13 @@ print(economics_wide)
 #> 3 Germany     3.89     4.26     4.08
 
 # Reshape to long format
-economics_long <- economics_wide %>%
+economics_long <- economics_wide |>
   pivot_longer(
     cols = starts_with("gdp_"),
     names_to = "year",
     names_prefix = "gdp_",
     values_to = "gdp"
-  ) %>%
+  ) |>
   mutate(year = as.integer(year))
 
 print(economics_long)
@@ -437,15 +442,15 @@ print(economics_long)
 
 ```r
 # Create data with missing values
-data_with_na <- mtcars %>%
-  tibble::rownames_to_column("car") %>%
+data_with_na <- mtcars |>
+  tibble::rownames_to_column("car") |>
   mutate(
     mpg = ifelse(row_number() %in% c(1, 5, 10), NA, mpg),
     hp = ifelse(row_number() %in% c(2, 7), NA, hp)
   )
 
 # Count missing values
-missing_summary <- data_with_na %>%
+missing_summary <- data_with_na |>
   summarise(across(everything(), ~sum(is.na(.))))
 
 print(missing_summary)
@@ -453,7 +458,7 @@ print(missing_summary)
 #> 1   0   3   0    0  2    0  0    0  0  0    0    0
 
 # Remove rows with any missing in key variables
-data_complete <- data_with_na %>%
+data_complete <- data_with_na |>
   filter(!is.na(mpg), !is.na(hp))
 
 cat("Original rows:", nrow(data_with_na), "\n")
@@ -462,7 +467,7 @@ cat("After removing NA:", nrow(data_complete), "\n")
 #> After removing NA: 27
 
 # Alternative: fill missing with mean (use with caution!)
-data_imputed <- data_with_na %>%
+data_imputed <- data_with_na |>
   mutate(
     mpg = ifelse(is.na(mpg), mean(mpg, na.rm = TRUE), mpg),
     hp = ifelse(is.na(hp), mean(hp, na.rm = TRUE), hp)
@@ -717,7 +722,7 @@ base_did$time_to_treat_factor <- factor(base_did$time_to_treat)
 
 # Drop one period as reference (period -1)
 event_study <- feols(y ~ i(time_to_treat_factor, ref = "-1") | id + period,
-                     data = base_did %>% filter(time_to_treat > -1000 | treat == 0))
+                     data = base_did |> filter(time_to_treat > -1000 | treat == 0))
 
 # Note: This is a simplified example; real event studies need more careful setup
 ```
@@ -869,7 +874,7 @@ cat("Figures saved successfully\n")
 
 ```r
 # Save processed data for reproducibility
-analysis_data <- mtcars %>%
+analysis_data <- mtcars |>
   mutate(efficiency = mpg / wt)
 
 # RDS format (preserves all R attributes)
@@ -1062,7 +1067,7 @@ data(diamonds, package = "ggplot2")
 # =========================
 
 # Clean and transform
-analysis_data <- mtcars %>%
+analysis_data <- mtcars |>
   mutate(efficiency = mpg / wt)
 
 # =========================
@@ -1094,14 +1099,14 @@ model <- feols(
 )
 
 # Break long pipes
-result <- data %>%
-  filter(year >= 2010) %>%
-  group_by(country, year) %>%
+result <- data |>
+  filter(year >= 2010) |>
+  group_by(country, year) |>
   summarise(
     mean_outcome = mean(outcome, na.rm = TRUE),
     sd_outcome = sd(outcome, na.rm = TRUE),
     .groups = "drop"
-  ) %>%
+  ) |>
   arrange(country, year)
 
 # Break long ggplot calls
@@ -1297,9 +1302,9 @@ if (any(missing_counts > 0)) {
 # CLEANING STEPS
 # =========================
 
-clean_data <- raw_data %>%
+clean_data <- raw_data |>
   # Add row identifier
-  tibble::rownames_to_column("id") %>%
+  tibble::rownames_to_column("id") |>
 
   # Rename variables for clarity
   rename(
@@ -1307,7 +1312,7 @@ clean_data <- raw_data %>%
     cylinders = cyl,
     horsepower = hp,
     weight = wt
-  ) %>%
+  ) |>
 
   # Create derived variables
   mutate(
@@ -1316,7 +1321,7 @@ clean_data <- raw_data %>%
     cylinder_group = factor(cylinders,
                            levels = c(4, 6, 8),
                            labels = c("4-cyl", "6-cyl", "8-cyl"))
-  ) %>%
+  ) |>
 
   # Remove missing values (document this decision)
   filter(!is.na(miles_per_gallon))
@@ -1370,7 +1375,7 @@ cat("Analysis data:", nrow(trade), "observations\n")
 # DESCRIPTIVE STATISTICS
 # =========================
 
-desc_stats <- trade %>%
+desc_stats <- trade |>
   summarise(
     n = n(),
     mean_euros = mean(Euros, na.rm = TRUE),

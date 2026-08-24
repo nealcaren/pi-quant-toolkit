@@ -140,7 +140,7 @@ post_samples <- as_draws_df(bayes_model)
 sd_wt <- sd(mtcars$wt)
 sd_mpg <- sd(mtcars$mpg)
 
-post_samples <- post_samples %>%
+post_samples <- post_samples |>
   mutate(
     # Standardized effect of weight
     std_effect_wt = b_wt * sd_wt / sd_mpg,
@@ -188,9 +188,9 @@ ggplot(post_samples, aes(x = b_wt)) +
 # Multiple coefficients comparison
 library(tidyr)
 
-coef_samples <- post_samples %>%
-  select(b_wt, b_hp, b_cyl, b_am) %>%
-  pivot_longer(everything(), names_to = "coefficient", values_to = "value") %>%
+coef_samples <- post_samples |>
+  select(b_wt, b_hp, b_cyl, b_am) |>
+  pivot_longer(everything(), names_to = "coefficient", values_to = "value") |>
   mutate(coefficient = gsub("b_", "", coefficient))
 
 ggplot(coef_samples, aes(x = value, fill = coefficient)) +
