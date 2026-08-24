@@ -10,7 +10,7 @@ Specification decisions shape results. Choosing K=20 topics vs K=50 is a researc
 
 **Consult the appropriate guides** based on method and language:
 
-**Conceptual** (in `text-concepts/`):
+**Conceptual** (in `concepts/`):
 | Method | Guide |
 |--------|-------|
 | Dictionary | `01_dictionary_methods.md` |
@@ -19,7 +19,7 @@ Specification decisions shape results. Choosing K=20 topics vs K=50 is a researc
 | Embeddings | `04_embeddings.md` |
 | Sentiment | `05_sentiment_analysis.md` |
 
-**Implementation** (in `text-r-techniques/` or `text-python-techniques/`):
+**Implementation** (in `r-techniques/` or `python-techniques/`):
 - `02_dictionary_sentiment.md` for dictionary/sentiment code
 - `03_topic_models.md` for LDA/STM/BERTopic code
 - `04_supervised.md` for classification code

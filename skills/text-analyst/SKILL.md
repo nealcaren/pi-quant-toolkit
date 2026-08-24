@@ -19,6 +19,10 @@ You are an expert text analysis assistant for sociology and social science resea
 
 5. **Appropriate interpretation**: Text analysis results require careful, qualified interpretation. Avoid overclaiming.
 
+6. **Plausibility at every stage**: The user may not be an expert in the corpus or the code, and text methods fail quietly — a model always returns topics, labels, or scores even from garbage input. At each phase, translate the output into a plain-language claim and go back to the documents to check it; compare methods (LDA vs. NMF vs. BERTopic; dictionary vs. supervised) and state whether they **converge or diverge**. See `concepts/07_plausibility_checks.md`.
+
+7. **Reproducible at every handoff**: Each stage must end reproducible-ready, not just the final paper. The preprocessing pipeline (stopwords, thresholds, seeds, exclusions) must be fully in code. Before closing a phase, run a **handoff audit**; at the end, run a **final reproducibility check** that rebuilds every output from the raw corpus in a clean session. See `concepts/08_handoff_audit.md`.
+
 ## File Management
 
 This skill uses git to track progress across phases. Before modifying any output file at a new phase:
@@ -33,14 +37,16 @@ This agent supports both **R** and **Python**. Each has strengths:
 
 | Method | Recommended Language | Rationale |
 |--------|---------------------|-----------|
-| **Topic Models (LDA, STM)** | **R** | `stm` package is gold standard; better diagnostics |
+| **Topic Models (LDA, STM, NMF, BERTopic, KeyATM, …)** | **Python (`topica`)** | `topica` unifies 50+ classical and neural models — including STM with covariates — under one API, validated against R `stm`/MALLET/keyATM. See `python-techniques/07_topica.md`. |
+| **Topic Models (R workflow)** | **R** | Use R's `stm`/`topicmodels` if the user prefers R or has an existing R pipeline. |
 | **Dictionary/Sentiment** | **R** | tidytext workflow is elegant; great lexicon support |
 | **Visualization** | **R** | ggplot2 produces publication-ready figures |
 | **Transformers/BERT** | **Python** | HuggingFace ecosystem, GPU support |
-| **BERTopic** | **Python** | Neural topic modeling, only in Python |
 | **Named Entity Recognition** | **Python** | spaCy is industry standard |
 | **Supervised Classification** | **Either** | sklearn and tidymodels both excellent |
 | **Word Embeddings** | **Python** | gensim more mature; sentence-transformers |
+
+**Topic models — default to `topica`.** It removes the old R-vs-Python split (structural topic models with covariate effects now run in Python at parity with R `stm`) and gives every model the same `fit` + diagnostics interface (`coherence()`, `search_k()`, `bootstrap_stability()`, `estimate_effect()`). Fall back to raw BERTopic (`03_topic_models.md`) or R `stm` only for something `topica` does not expose or when the user prefers R.
 
 **At Phase 0, help users select the appropriate language based on their methods.**
 
@@ -174,6 +180,8 @@ Located in `concepts/` (relative to this skill):
 | `04_embeddings.md` | Word2Vec, GloVe, BERT concepts |
 | `05_sentiment_analysis.md` | Dictionary vs ML approaches |
 | `06_validation_strategies.md` | Human coding, diagnostics, robustness |
+| `07_plausibility_checks.md` | Per-stage face validity, cross-method convergence, red flags |
+| `08_handoff_audit.md` | Per-stage reproducibility gate, handoff audit, final clean-room check |
 
 ### R Technique Guides
 Located in `r-techniques/`:
@@ -198,6 +206,7 @@ Located in `python-techniques/`:
 | `04_supervised.md` | sklearn, transformers |
 | `05_embeddings.md` | gensim, sentence-transformers |
 | `06_visualization.md` | matplotlib, pyLDAvis |
+| `07_topica.md` | **`topica`: unified topic models (LDA/STM/BERTopic/NMF/KeyATM…), built-in diagnostics — preferred for topic modeling** |
 
 **Read the relevant guides before writing code for that method.**
 
@@ -251,3 +260,6 @@ When the user is ready to begin:
 - **Show your dictionaries**: If using lexicons, readers should see the word lists
 - **Uncertainty exists**: Topic models and classifiers have uncertainty; acknowledge it
 - **Corpus defines scope**: Findings apply to the analyzed corpus, not "language" generally
+- **Read the documents**: Face-validity beats any coherence score; check every topic/label/score against real texts, and say whether methods converge or diverge. See `concepts/07_plausibility_checks.md`.
+- **Audit each handoff**: End every phase reproducible-ready with the full preprocessing pipeline in code; finish with a clean-room master run that rebuilds all outputs from the raw corpus. See `concepts/08_handoff_audit.md`.
+- **Prefer `topica` for topic models**: One API for LDA/STM/BERTopic/NMF/KeyATM with built-in diagnostics. See `python-techniques/07_topica.md`.

@@ -1,5 +1,7 @@
 # Topic Models in Python
 
+> **Prefer `topica` by default.** For topic modeling in Python, `topica` (`python-techniques/07_topica.md`) is the recommended first choice: LDA, STM, BERTopic, NMF, and KeyATM under one API, with built-in diagnostics (coherence, `search_k`, `bootstrap_stability`, `estimate_effect`). Use this gensim/BERTopic guide for cases `topica` doesn't cover, or when you specifically want the raw libraries.
+
 ## Package Versions
 
 ```python

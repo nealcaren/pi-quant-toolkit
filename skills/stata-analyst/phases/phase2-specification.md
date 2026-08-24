@@ -8,7 +8,7 @@ Specification decisions are research decisions. Making them explicit before seei
 
 ## Technique Guides
 
-**Consult these guides** in `stata-statistical-techniques/` for specification patterns:
+**Consult these guides** in `techniques/` for specification patterns:
 
 | Method | Guide |
 |--------|-------|

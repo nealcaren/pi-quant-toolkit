@@ -8,7 +8,7 @@ Analysis isn't complete until it's communicated. This phase transforms results i
 
 ## Technique Guides
 
-**Consult these guides** in `stata-statistical-techniques/` for output code patterns:
+**Consult these guides** in `techniques/` for output code patterns:
 
 | Topic | Guide |
 |-------|-------|
@@ -263,6 +263,25 @@ display "Stata version: " c(stata_version)
 log close
 ```
 
+## Final Reproducibility Check
+
+This is the clean-room gate before shipping. Run the full audit in `techniques/09_handoff_audit.md`.
+
+```stata
+* Clean-room master run — fresh session, batch mode
+* stata -b do 00_master.do
+* (or: StataMP -b do "00_master.do")
+```
+
+- **Clean-room master run**: `00_master.do` runs start-to-finish via `stata -b` from a fresh checkout with no leftover globals or data in memory
+- **Output reconciliation**: every table and figure regenerated matches the numbers reported in the paper (spot-check point estimates, N, and SEs)
+- **Environment capture**: log `version`, `about`, and relevant `creturn` (`c(stata_version)`, `c(os)`); list every user-written command used (`reghdfe`, `estout`, `csdid`, ...) with its installed version
+- **Replication package assembled**: `00_master.do`, all do-files, clean data (or build steps), logs, and a README, packaged and committed
+
+## Final Plausibility Pass
+
+Before shipping, re-read every headline number through `techniques/08_plausibility_checks.md`. Confirm each is defensible in real units and that the confirm / attenuate / overturn story across specifications is stated clearly in the narrative. A number you cannot defend does not go in the paper.
+
 ## Output: Final Report
 
 Append a `## Phase 5: Output & Interpretation` section to `memos/analysis-memo.md` containing:
@@ -305,6 +324,13 @@ Append a `## Phase 5: Output & Interpretation` section to `memos/analysis-memo.m
 
 ## Limitations
 [Honest assessment of limitations]
+
+## Final Reproducibility Check
+- **Clean-room master run**: [passed / failed — `00_master.do` via `stata -b` from a fresh session]
+- **Outputs reconcile**: [all tables/figures match the paper]
+- **Environment captured**: [Stata version, OS, user-written commands + versions logged]
+- **Replication package**: [complete — do-files, data/build, logs, README, committed]
+- **Remaining caveats**: [anything a replicator must know]
 
 ## Conclusion
 [What can and cannot be concluded from this analysis]
@@ -357,5 +383,6 @@ Return a summary to the orchestrator that includes:
 4. Any remaining questions or concerns
 5. Confirmation that replication materials are ready
 6. Checklist tier achieved (minimum/strong/exemplary)
+7. Confirmation that the final reproducibility check passed (clean-room master run) and the replication package is complete
 
 **The analysis is now complete.** All materials should be ready for paper writing.

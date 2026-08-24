@@ -6,9 +6,11 @@ You are executing Phase 1 of a statistical analysis in Stata. Your goal is to de
 
 Jumping straight to regression is a common mistake. Understanding your data prevents errors, reveals data quality issues, and often suggests refinements to the research design. This phase creates the foundation for credible analysis.
 
+> **Two gates apply here.** Sanity-check every descriptive against `techniques/08_plausibility_checks.md`: check ranges, units, signs, and benchmarks before trusting any number. And this cleaning stage must end reproducible-ready — run the handoff audit in `techniques/09_handoff_audit.md` so the stage reruns clean from a fresh session via its do-file.
+
 ## Technique Guides
 
-**Consult these guides** in `stata-statistical-techniques/` for data handling patterns:
+**Consult these guides** in `techniques/` for data handling patterns:
 
 | Topic | Guide |
 |-------|-------|
@@ -239,6 +241,20 @@ Append a `## Phase 1: Data Familiarization` section to `memos/analysis-memo.md` 
 - [Anything notable in the descriptives]
 - [Any surprises or concerns]
 
+### Plausibility Check
+- **Sanity**: quantities/ranges/units/means make sense (no negative counts, wrong-scale means)
+- **Benchmark**: descriptives compared to known values (published figures, official totals)
+- **Missingness**: rates and patterns are plausible, not silent data loss
+- **Red flags**: [any implausible values found and how resolved]
+
+### Handoff Audit
+- **Runs clean**: stage reruns start-to-finish from a fresh Stata session via its do-file
+- **Paths**: inputs → outputs use canonical `$raw`/`$clean` paths, no hardcoded absolutes
+- **Row-count reconciliation**: N in → N out, every drop logged (original → final)
+- **Decisions**: cleaning/coding decisions documented in the do-file and memo
+- **Committed**: code and log committed
+- **Ready for handoff**: [yes / blockers]
+
 ## Questions for User
 - [Any decisions that need user input]
 ```
@@ -251,5 +267,7 @@ Return a summary to the orchestrator that includes:
 3. Whether data supports the planned design
 4. Key observations from descriptives
 5. Confirmation that Phase 1 section was appended to `memos/analysis-memo.md`
+6. Confirmation that descriptives were sanity-checked (ranges/units/signs/benchmarks) and any implausible values flagged
+7. Confirmation that the handoff audit passed — the stage reruns clean from a fresh session via its do-file
 
 **Do not proceed to Phase 2 until the user reviews the descriptives and confirms the sample.**

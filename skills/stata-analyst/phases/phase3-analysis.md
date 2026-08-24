@@ -6,9 +6,11 @@ You are executing Phase 3 of a statistical analysis in Stata. Your goal is to ru
 
 This is where the analysis happens. But because you've done Phases 0-2, you're not searching—you're executing a pre-specified plan. This makes results more credible.
 
+> **Before believing any coefficient**, run the results plausibility checks in `techniques/08_plausibility_checks.md`: check sign, magnitude in real units, precision, and fit. Then report cross-specification consistency — whether the preferred design (FE/DiD/IV) *confirms*, *attenuates*, or *overturns* the simpler models. State the pattern in words, not just a table. Each stage must also end reproducible-ready per `techniques/09_handoff_audit.md`.
+
 ## Technique Guides
 
-**Before writing code, consult the relevant technique guide** in `stata-statistical-techniques/` for method-specific patterns:
+**Before writing code, consult the relevant technique guide** in `techniques/` for method-specific patterns:
 
 | Method | Guide |
 |--------|-------|
@@ -306,6 +308,23 @@ at the X% level / not statistically significant].
 - Key caveat: [main limitation]
 - Next step: robustness checks in Phase 4
 
+### Plausibility Check
+- **Sign**: matches theory and the bivariate/descriptive relationship
+- **Magnitude**: believable against the outcome SD/mean and the literature (not implausibly large)
+- **Precision**: SE and `e(N)` match the intended estimation sample
+- **Fit**: plausible, no leakage (suspiciously high R² or perfect prediction)
+- **Units-and-belief statement**: [one sentence — the effect in real units and why it is credible]
+
+### Cross-Specification Consistency
+- Does the preferred FE/DiD/IV estimate **confirm**, **attenuate**, or **overturn** the OLS/simpler models?
+- [State the pattern explicitly — e.g., "adding unit FE attenuates the estimate by 40% but sign and significance hold"]
+
+### Handoff Audit
+- **Runs clean**: stage reruns from a fresh Stata session via its do-file
+- **Paths**: canonical `$clean`/`$tables`/`$figures` paths, `set seed` where estimation is stochastic
+- **Reconciliation**: `e(N)` matches the documented analysis sample
+- **Committed**: code and log committed; ready for handoff [yes / blockers]
+
 ## Questions for User
 - [Any interpretive questions]
 - [Should we proceed to robustness?]
@@ -319,5 +338,8 @@ Return a summary to the orchestrator that includes:
 3. Whether results are stable across specifications
 4. Any diagnostic concerns
 5. Confirmation that Phase 3 section was appended to `memos/analysis-memo.md`
+6. Confirmation that results were plausibility-checked (sign/magnitude/precision/fit)
+7. Whether the preferred design confirms, attenuates, or overturns the simpler specs
+8. Confirmation that the handoff audit passed
 
 **Do not proceed to Phase 4 until the user reviews the main results.**

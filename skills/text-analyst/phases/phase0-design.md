@@ -8,7 +8,7 @@ Text analysis methods answer different questions. Topic models reveal themes; cl
 
 ## Technique Guides
 
-**Consult these conceptual guides** in `text-concepts/` for method selection:
+**Consult these conceptual guides** in `concepts/` for method selection:
 
 | Guide | Use For |
 |-------|---------|

@@ -6,14 +6,16 @@ You are executing Phase 4 of a computational text analysis. Your goal is to vali
 
 Algorithmic output is not ground truth. Topic models find patterns—but are they meaningful patterns? Classifiers achieve accuracy—but do they capture what you intend? This phase establishes that results are valid and robust, not artifacts of method choices.
 
+> **Validation must actually happen — it is the plausibility gate for this phase** (`concepts/07_plausibility_checks.md`). Hand-code a sample and compute agreement; test stability across seeds and K (`bootstrap_stability`); test sensitivity to preprocessing. A finding that vanishes when the seed changes is not a finding. Close the stage reproducible-ready and audit the handoff (`concepts/08_handoff_audit.md`).
+
 ## Technique Guides
 
-**Consult validation guide** in `text-concepts/`:
+**Consult validation guide** in `concepts/`:
 - `06_validation_strategies.md` - comprehensive validation approaches
 
 **Implementation guides** for diagnostics:
-- R: `text-r-techniques/03_topic_models.md` (coherence, exclusivity)
-- Python: `text-python-techniques/03_topic_models.md` (coherence, c_v)
+- R: `r-techniques/03_topic_models.md` (coherence, exclusivity)
+- Python: `python-techniques/03_topic_models.md` (coherence, c_v)
 
 ## Your Tasks
 
@@ -286,6 +288,17 @@ Append a `## Phase 4: Validation & Robustness` section to `memos/analysis-memo.m
 - [Cannot claim 1]
 - [Cannot claim 2]
 
+### Plausibility Check
+- Human-validation agreement reported: [kappa / % agreement, sample size]
+- Stability across seeds and K: [stable/varies — bootstrap_stability]
+- Sensitivity to preprocessing: [robust/sensitive]
+- Cross-method convergence: [converge / partly / diverge]
+
+### Handoff Audit
+- Runs clean from a fresh session: [Yes/No]
+- Seeds set; validation code + hand-coded sets in repo: [Yes/No]
+- Committed; ready for handoff: [Yes/No]
+
 ## Recommendation
 [Proceed to output / Revise analysis / Major concerns]
 ```
@@ -300,5 +313,7 @@ Return a summary to the orchestrator that includes:
 3. Robustness assessment (are results stable?)
 4. Required caveats and limitations
 5. Recommendation for proceeding
+6. Confirm human validation was done and stability/sensitivity checked
+7. Confirm the handoff audit passed
 
 **Do not proceed to Phase 5 until the user reviews validation results.**

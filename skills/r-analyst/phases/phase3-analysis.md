@@ -6,9 +6,11 @@ You are executing Phase 3 of a statistical analysis in R. Your goal is to run th
 
 This is where the analysis happens. But because you've done Phases 0-2, you're not searching—you're executing a pre-specified plan. This makes results more credible.
 
+> **Quality gates.** Before believing any coefficient, run the results plausibility checks in `techniques/09_plausibility_checks.md`—sign, magnitude in real units, precision, fit. Then report cross-specification consistency: whether the preferred design **confirms / attenuates / overturns** the simpler models. Close the stage reproducible-ready via `techniques/10_handoff_audit.md`.
+
 ## Technique Guides
 
-**Before writing code, consult the relevant technique guide** in `r-statistical-techniques/` for method-specific patterns:
+**Before writing code, consult the relevant technique guide** in `techniques/` for method-specific patterns:
 
 | Method | Guide |
 |--------|-------|
@@ -311,6 +313,25 @@ at the X% level / not statistically significant].
 - Key caveat: [main limitation]
 - Next step: robustness checks in Phase 4
 
+### Plausibility Check
+- **Sign**: Matches theory and the bivariate relationship
+- **Magnitude**: Believable relative to outcome SD / mean / literature
+- **Precision & N**: SE and CI reasonable; N matches the analysis sample
+- **Fit**: Plausible, with no sign of leakage or a too-good-to-be-true model
+- **Units-and-belief statement**: [In plain words, what the effect is and why it is credible]
+
+### Cross-Specification Consistency
+- Does the preferred FE / DiD / IV estimate **confirm / attenuate / overturn** the OLS baseline?
+- [State the pattern explicitly]
+
+### Handoff Audit
+- **Runs clean**: Script executes end-to-end from a fresh session
+- **Canonical paths**: Inputs → outputs use documented canonical paths
+- **Row-count reconciliation**: N in → N out, every drop logged
+- **Decisions documented**: Modeling choices recorded
+- **Committed**: Code and outputs committed
+- **Ready for handoff**: [Yes / blockers]
+
 ### Questions for User
 - [Any interpretive questions]
 - [Should we proceed to robustness?]
@@ -323,7 +344,10 @@ Return a summary to the orchestrator that includes:
 2. Whether the effect is statistically significant
 3. Whether results are stable across specifications
 4. Any diagnostic concerns
-5. Questions for the user
-6. Confirmation that the Phase 3 section was appended to `memos/analysis-memo.md`
+5. Results were plausibility-checked (sign / magnitude / precision / fit)
+6. Whether the preferred design confirms, attenuates, or overturns the simpler specs
+7. The handoff audit passed
+8. Questions for the user
+9. Confirmation that the Phase 3 section was appended to `memos/analysis-memo.md`
 
 **Do not proceed to Phase 4 until the user reviews the main results.**

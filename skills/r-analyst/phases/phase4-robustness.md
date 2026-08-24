@@ -6,9 +6,11 @@ You are executing Phase 4 of a statistical analysis in R. Your goal is to stress
 
 Main results are only as credible as their robustness. Reviewers will ask: "How do you know this isn't driven by [X]?" This phase pre-empts those questions and honestly assesses the fragility of the findings.
 
+> **Quality gates.** Read each robustness result through the plausibility lens (`techniques/09_plausibility_checks.md`): compare every robustness spec to Main using **confirm / attenuate / overturn** language, placebo tests MUST pass (a placebo that "works" is a failure), and sample N must stay stable. Close the stage reproducible-ready via `techniques/10_handoff_audit.md`.
+
 ## Technique Guides
 
-**Consult these guides** in `r-statistical-techniques/` for robustness code patterns:
+**Consult these guides** in `techniques/` for robustness code patterns:
 
 | Topic | Guide |
 |-------|-------|
@@ -396,6 +398,20 @@ The main findings are [robust / partially robust / not robust] to alternative sp
 **Conclusion:**
 The main findings [can / cannot] be considered robust because [reasoning].
 
+### Plausibility Check
+- **Each robustness row vs Main**: [State each in confirm / attenuate / overturn terms]
+- **Placebos**: All placebo tests pass (no effect where none should exist)
+- **N stable**: Sample size holds across specifications
+- **Sensitivity to unobservables**: [Translate the sensemakr result into plain words]
+
+### Handoff Audit
+- **Runs clean**: Script executes end-to-end from a fresh session
+- **Canonical paths**: Inputs → outputs use documented canonical paths
+- **Row-count reconciliation**: N in → N out, every drop logged
+- **Decisions documented**: Robustness choices recorded
+- **Committed**: Code and outputs committed
+- **Ready for handoff**: [Yes / blockers]
+
 ### Questions for User
 - [Any interpretive questions about robustness]
 ```
@@ -407,7 +423,9 @@ Return a summary to the orchestrator that includes:
 2. Which checks passed/failed
 3. Sensitivity analysis conclusions
 4. Any concerns about the findings
-5. Questions for the user
-6. Confirmation that the Phase 4 section was appended to `memos/analysis-memo.md`
+5. Each robustness check was compared to Main and placebos passed
+6. The handoff audit passed
+7. Questions for the user
+8. Confirmation that the Phase 4 section was appended to `memos/analysis-memo.md`
 
 **Do not proceed to Phase 5 until the user reviews the robustness assessment.**

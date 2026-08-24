@@ -6,14 +6,16 @@ You are executing Phase 1 of a computational text analysis. Your goal is to load
 
 You cannot interpret text analysis results without knowing your corpus. This phase reveals data quality issues, informs preprocessing decisions, and establishes baseline understanding. Skipping exploration leads to garbage-in, garbage-out.
 
+> **Two quality gates for this phase.** Sanity-check the corpus before trusting it — counts, language/encoding, length distribution, junk tokens in top terms, metadata alignment — following `concepts/07_plausibility_checks.md`. And end this preprocessing stage reproducible-ready: the full pipeline plus seeds live in code, and you pass a handoff audit before moving on (`concepts/08_handoff_audit.md`).
+
 ## Technique Guides
 
 **Consult the appropriate technique guides** based on chosen language:
 
-**For R** (in `text-r-techniques/`):
+**For R** (in `r-techniques/`):
 - `01_preprocessing.md` - tidytext and quanteda workflows
 
-**For Python** (in `text-python-techniques/`):
+**For Python** (in `python-techniques/`):
 - `01_preprocessing.md` - nltk, spaCy, sklearn pipelines
 
 ## Your Tasks
@@ -215,6 +217,21 @@ Append a `## Phase 1: Corpus Preparation` section to `memos/analysis-memo.md`:
 - [Observation 2]
 - [Potential concerns]
 
+### Plausibility Check
+- Read a sample of documents: [what they actually contain]
+- Top terms look like content, not artifacts: [Yes/No — flag junk tokens]
+- Counts / language / length sane: [Yes/No]
+- Metadata aligned to documents: [Yes/No]
+- Red flags: [none / list]
+
+### Handoff Audit
+- Runs clean from a fresh session: [Yes/No]
+- Seeds set: [Yes/No]
+- Preprocessing fully in code (stopword list, thresholds, exclusions): [Yes/No]
+- Inputs → outputs canonical: [paths]
+- Document-count reconciliation: N in → N out; vocab size = X
+- Committed: [Yes/No] — ready for handoff
+
 ## Ready for Analysis?
 - [ ] Data quality acceptable
 - [ ] Preprocessing documented
@@ -291,5 +308,7 @@ Return a summary to the orchestrator that includes:
 3. Key preprocessing decisions and rationale
 4. Preliminary observations about corpus content
 5. Any concerns for the user to consider
+6. Confirm the corpus was sanity-checked against real documents
+7. Confirm the handoff audit passed (preprocessing reproducible from a fresh session)
 
 **Do not proceed to Phase 2 until the user confirms preprocessing decisions.**
