@@ -84,6 +84,12 @@ Do NOT create version-suffixed copies (e.g., `-v2`, `-final`, `-working`). The g
 
 **Output**: Design memo documenting question, strategy, assumptions, and threats.
 
+> **Method not in the technique menu?** If the design calls for a method without a
+> guide in `techniques/` (e.g. latent class analysis, mixture models, SEM,
+> multilevel, survival, sequence analysis), invoke the **`method-scout`** skill:
+> find the maintained package via CRAN Task Views, follow its vignette, and apply
+> the same validation/reproducibility discipline — do not improvise the API.
+
 > **Pause**: Confirm design with user before proceeding.
 
 ---

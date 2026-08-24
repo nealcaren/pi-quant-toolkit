@@ -9,12 +9,18 @@ on:
 
 jobs:
   install-and-boot:
-    name: Install & boot pi (Node ${{ matrix.node }})
-    runs-on: ubuntu-latest
+    name: Install & boot pi (${{ matrix.os }}, Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
         node: ["22", "24"]
+    # Use bash on every OS (Git Bash ships on the Windows runner) so the same
+    # steps run identically across ubuntu / macos / windows.
+    defaults:
+      run:
+        shell: bash
     steps:
       - uses: actions/checkout@v4
 
@@ -55,7 +61,7 @@ jobs:
           fi
           echo "Extensions loaded and pi booted cleanly."
 
-  lint-scripts:
+  lint-shell:
     name: Shellcheck setup.sh
     runs-on: ubuntu-latest
     steps:
@@ -66,3 +72,25 @@ jobs:
         run: |
           sudo apt-get update -qq && sudo apt-get install -y shellcheck
           shellcheck -S warning setup.sh || true   # advisory, non-blocking
+
+  lint-powershell:
+    name: Lint setup.ps1
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Parse setup.ps1 (blocking)
+        shell: pwsh
+        run: |
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile("setup.ps1", [ref]$null, [ref]$errors) | Out-Null
+          if ($errors) {
+            $errors | ForEach-Object { Write-Error $_.Message }
+            exit 1
+          }
+          Write-Host "setup.ps1 parsed cleanly."
+      - name: PSScriptAnalyzer (advisory)
+        shell: pwsh
+        run: |
+          Install-Module PSScriptAnalyzer -Force -Scope CurrentUser -ErrorAction SilentlyContinue
+          Invoke-ScriptAnalyzer -Path setup.ps1 -Severity Warning,Error | Format-Table -AutoSize
+          # advisory, non-blocking

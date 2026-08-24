@@ -84,6 +84,12 @@ Do NOT create version-suffixed copies (e.g., `-v2`, `-final`, `-working`). The g
 
 **Output**: Design memo documenting question, strategy, assumptions, and threats.
 
+> **Method not in the technique menu?** If the design calls for a method without a
+> guide in `techniques/` (e.g. latent class analysis via `gsem, lclass()`, SEM,
+> multilevel, survival, sequence analysis), invoke the **`method-scout`** skill:
+> check built-in `gsem`/`sem` and the SSC archive, follow the `help`/Stata Journal
+> docs, and apply the same validation/reproducibility discipline — don't guess.
+
 > **Pause**: Confirm design with user before proceeding.
 
 ---

@@ -85,6 +85,7 @@ session: `/model openrouter/deepseek/deepseek-v4-pro`.
 | `r-analyst` | Statistical analysis in R (DiD, IV, matching, panel, etc.) |
 | `stata-analyst` | The same, in Stata |
 | `text-analyst` | Text analysis (topic models, sentiment, classification) in R or Python |
+| `method-scout` | For a method it doesn't already know (e.g. latent class analysis): finds the right maintained package, reads the vignette, and follows best practice instead of guessing |
 | `project-scaffold` | Sets up a tidy research-project folder for you |
 | `lit-search` | Finds papers via OpenAlex/Crossref and files them into Zotero |
 | `tidy-r` | Modern-tidyverse conventions so your R code isn't dated base R |
