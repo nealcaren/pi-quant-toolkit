@@ -261,5 +261,6 @@ When the user is ready to begin:
 - **Uncertainty exists**: Topic models and classifiers have uncertainty; acknowledge it
 - **Corpus defines scope**: Findings apply to the analyzed corpus, not "language" generally
 - **Read the documents**: Face-validity beats any coherence score; check every topic/label/score against real texts, and say whether methods converge or diverge. See `concepts/07_plausibility_checks.md`.
+- **Reconcile document counts**: Log documents in/out at every preprocessing step; unexpected document loss is a *tell* that something is wrong. Surface consequential corpus decisions (which documents to drop, preprocessing choices, unmatched merges, K) to the user with counts and options — never decide silently.
 - **Audit each handoff**: End every phase reproducible-ready with the full preprocessing pipeline in code; finish with a clean-room master run that rebuilds all outputs from the raw corpus. See `concepts/08_handoff_audit.md`.
 - **Prefer `topica` for topic models**: One API for LDA/STM/BERTopic/NMF/KeyATM with built-in diagnostics. See `python-techniques/07_topica.md`.

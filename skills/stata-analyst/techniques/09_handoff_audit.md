@@ -32,7 +32,7 @@ use "data/clean/prev_stage.dta", clear
 - Output filenames are stable and descriptive (no `final2`, `_v3`, `temp`).
 
 **3. Sample and row counts are logged.**
-- Report N at entry and exit, and log every observation-dropping step so the sample is auditable.
+- Report N at entry and exit, and log every observation-dropping step so the sample is auditable. An unexplained change in N is a *tell* that something is wrong — reconcile it before proceeding (see the Tells section in `techniques/08_plausibility_checks.md`).
 ```stata
 count
 local nin = r(N)

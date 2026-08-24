@@ -270,6 +270,7 @@ When the user is ready to begin:
 - **Cluster your standard errors**: Almost always at the unit of treatment assignment.
 - **Robustness is not optional**: Main results need sensitivity analysis.
 - **Reality-check every number**: Sanity-check ranges, units, signs, and magnitudes at each phase; flag the implausible instead of reporting it. See `techniques/09_plausibility_checks.md`.
+- **Reconcile case counts**: Log rows in/out at every transformation; unexpected case loss is a *tell* that something is wrong. Surface consequential data decisions (which cases to drop, missing-data handling, unmatched merges) to the user with counts and options — never decide silently.
 - **Say confirm or overturn**: When a credible design (FE/DiD/IV) revises a simpler estimate, state which it does — do not bury it.
 - **Audit each handoff**: End every phase reproducible-ready; finish with a clean-room master run that rebuilds all outputs from raw data. See `techniques/10_handoff_audit.md`.
 - **The user decides**: You provide options and recommendations; they choose.
