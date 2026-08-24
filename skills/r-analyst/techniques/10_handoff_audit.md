@@ -29,7 +29,7 @@ input  <- readRDS(here("data/clean/prev_stage.rds"))
 - Output filenames are stable and descriptive (no `final2`, `_v3`, `temp`).
 
 **3. Sample and row counts are logged.**
-- Print N at entry and exit, and log every row-dropping step so the sample is auditable.
+- Print N at entry and exit, and log every row-dropping step so the sample is auditable. An unexplained change in N is a *tell* that something is wrong — reconcile it before proceeding (see the Tells section in `techniques/09_plausibility_checks.md`).
 ```r
 cat("rows in:",  nrow(input), "\n")
 clean <- input |> filter(!is.na(outcome))

@@ -16,6 +16,53 @@ Never present a text-analysis result you have not checked against the underlying
 
 ---
 
+## Tells: reconcile expected vs. actual
+
+A **tell** is a gap between what you expected and what you got. After *every* step that could change the corpus — a language/length filter, tokenization, stopword and min-frequency pruning, a metadata merge — reconcile: **document count, vocabulary size, and metadata alignment.** If any moved and you cannot say why, stop: an unexplained change is a symptom. Losing documents you did not mean to lose is often the first sign something upstream is wrong (an encoding failure, an over-aggressive filter, a bad join).
+
+```python
+# Log document counts after each preprocessing step. An unexplained change is a tell.
+def reconcile(before, after, label=""):
+    print(f"[{label}] docs: {len(before)} -> {len(after)} ({len(after)-len(before):+d})")
+    return after
+
+# Tokenization/pruning can empty short documents — count them:
+empty = sum(len(toks) == 0 for toks in tokenized)
+if empty:
+    print(f"TELL: {empty} documents empty after tokenization/pruning")
+
+# Metadata must stay aligned with documents through every filter (STM/covariates):
+assert len(corpus.docs) == len(corpus.metadata), "doc/metadata misalignment — a tell"
+```
+
+**Common tells and what they usually mean:**
+
+| Tell | Usual cause |
+|---|---|
+| Document count drops after tokenization/pruning | short docs emptied by stopword/min-freq removal |
+| Doc count changes after a metadata merge | key mismatch (loss) or duplicate keys (fan-out) |
+| Doc/metadata length mismatch | a filter applied to one but not the other — covariate rows no longer match texts |
+| Vocabulary dominated by junk (`http`, `amp`, `rt`, numbers) | preprocessing didn't strip artifacts |
+| A "topic" that is a large share of function words | stopwords/boilerplate not removed |
+| Duplicate documents | inflate a spurious "theme"; dedup and recheck |
+| Encoding artifacts (mojibake) | wrong encoding on load |
+| Class imbalance discovered only at the end | should have been caught in Phase 1 |
+
+Wire this into the corpus-construction log from Phase 1 so every dropped document is counted and attributable.
+
+## Involve the user in consequential corpus decisions
+
+You provide the counts and the options; the user makes the call. **Never silently decide** any of the following — surface the number affected and at least two options, and get a choice:
+
+- **Which documents to drop** (too short, wrong language, duplicates) — and confirm unexpected drops are intended, not a bug.
+- **Preprocessing choices** that change results: stopword list, stemming/lemmatization, min/max document frequency, phrase learning.
+- **What to do with unmatched documents** after a metadata merge.
+- **K** (number of topics), classification thresholds, and dictionary/lexicon choice.
+
+A dropped document is both a decision (a) the user should own and a diagnostic (b) — if the count is larger than expected, treat it as a tell before treating it as a choice.
+
+---
+
 ## Phase 1: Corpus plausibility
 
 Before modeling, confirm the corpus is what you think it is.

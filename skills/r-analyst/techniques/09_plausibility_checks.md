@@ -16,6 +16,65 @@ Never present a result you have not personally reality-checked.
 
 ---
 
+## Tells: reconcile expected vs. actual
+
+A **tell** is a gap between what you expected and what you got. After *every* transformation that could change the data — a filter, a merge, a recode, a type conversion — reconcile four things: **row count, key uniqueness, distributions, and missingness.** If any moved and you cannot say why, stop: an unexplained change is a symptom, not a nuisance. Losing cases you did not mean to lose is often the first sign that something upstream is wrong.
+
+```r
+# Log rows in/out (and key uniqueness) after each step. An unexplained
+# change in N is a tell.
+reconcile <- function(before, after, id = NULL, label = "") {
+  cat(sprintf("[%s] rows: %d -> %d (%+d)\n",
+              label, nrow(before), nrow(after), nrow(after) - nrow(before)))
+  if (!is.null(id)) {
+    dup <- sum(duplicated(after[[id]]))
+    if (dup > 0) cat(sprintf("  TELL: %d duplicate %s values (uniqueness broken)\n", dup, id))
+  }
+  invisible(after)
+}
+
+# Type coercion is the classic silent case-killer — check for NEW missingness:
+x_num <- as.numeric(x)
+new_na <- sum(is.na(x_num) & !is.na(x))
+if (new_na > 0) cat(sprintf("TELL: %d values became NA under coercion\n", new_na))
+
+# Joins: a good merge does not change the row count of the base table by surprise.
+joined <- left_join(base, extra, by = "id")
+stopifnot(nrow(joined) == nrow(base))          # more rows => duplicate keys fanning out
+cat("unmatched:", sum(is.na(joined$extra_key)), "of", nrow(base), "\n")  # low match rate is a tell
+```
+
+**Common tells and what they usually mean:**
+
+| Tell | Usual cause |
+|---|---|
+| N in ≠ N out after a filter (unexpected drop) | wrong variable name, unexpected coding, filter matched nothing/everything |
+| Join changes row count | key mismatch (loss) or duplicate keys (fan-out) |
+| Low merge match rate | ID formatting mismatch; biases everything downstream |
+| N silently shrinks between models | listwise deletion on a control only some specs include — specs no longer on the same sample |
+| A variable becomes constant | bad recode or wrong column pulled |
+| Mean/SD shifts after a "harmless" step | the step wasn't harmless — find out why |
+| New NAs after a transformation | failed coercion / date parse / unmatched factor level |
+| An all-missing column | wrong name, or a join that never matched |
+| Spikes at −99 / 999 / 0 | sentinel codes being treated as real values |
+| Levels appear/vanish after a recode | dropped or mismapped category |
+
+Wire this into the sample-construction log from Phase 1 so every dropped case is counted and attributable.
+
+## Involve the user in consequential data decisions
+
+You provide the counts and the options; the user makes the call. **Never silently decide** any of the following — surface the number affected and at least two options, and get a choice:
+
+- **Which cases to drop** (and confirm unexpected drops are intended, not a bug).
+- **How to handle missing data** (listwise, imputation, indicator).
+- **What to do with unmatched merge records** (`_merge` master-only / using-only).
+- **Outliers** (keep, winsorize, trim) and the cutoff.
+- **Sample restrictions** (time window, subpopulation) that change who the findings are about.
+
+A dropped case is both a decision (a) the user should own and a diagnostic (b) — if the count is larger than expected, treat it as a tell before treating it as a choice.
+
+---
+
 ## Phase 1: Descriptives plausibility
 
 Before any modeling, confirm the data describes a world that could exist.

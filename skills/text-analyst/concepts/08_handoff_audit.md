@@ -22,7 +22,7 @@ At the end of **each** phase, verify all of the following. Every "no" must be fi
 
 **4. Inputs and outputs are explicit and canonical.** Reads only declared inputs (raw corpus or a prior stage's saved DTM/embeddings/model); writes only to canonical paths (`data/processed/`, `output/`). No absolute/personal paths. Save fitted models (`model.save()`) so downstream stages don't refit.
 
-**5. Document counts are logged.** Print N documents (and vocabulary size) at entry and exit, and log every filtering step (empty docs dropped, min-freq pruning, language filter) so the corpus is auditable.
+**5. Document counts are logged.** Print N documents (and vocabulary size) at entry and exit, and log every filtering step (empty docs dropped, min-freq pruning, language filter) so the corpus is auditable. An unexplained change in the document count is a *tell* that something is wrong — reconcile it before proceeding (see the Tells section in `concepts/07_plausibility_checks.md`).
 
 **6. Decisions are documented where they happen.** Every non-obvious choice (why K=8, why this stopword added, why these documents excluded, why this threshold) has a one-line comment saying *why*.
 
