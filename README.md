@@ -1,5 +1,7 @@
 # pi-quant-toolkit
 
+[![CI](https://github.com/nealcaren/pi-quant-toolkit/actions/workflows/ci.yml/badge.svg)](https://github.com/nealcaren/pi-quant-toolkit/actions/workflows/ci.yml)
+
 A [Pi](https://pi.dev) coding-agent package for **quantitative social science**.
 It bundles analysis skills (R, Stata, computational text analysis, project
 scaffolding) plus a literature-search skill that finds work through OpenAlex /
