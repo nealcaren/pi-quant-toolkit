@@ -1,0 +1,154 @@
+# Progress Tracking
+# Auto-updated by skills - manual edits may be overwritten
+schema_version: 1
+
+# Project type (from project.yaml)
+type: qualitative  # qualitative, quantitative, or mixed
+
+# Current phase (derived from status flags)
+phase: setup  # setup, literature, analysis, writing, revision, complete
+
+# Artifact registry
+# Skills register their outputs here with paths and timestamps
+artifacts: {}
+
+# =============================================================================
+# STATUS BY PROJECT TYPE
+# Only one section is active based on project type
+# =============================================================================
+
+# --- QUALITATIVE STATUS ---
+status_qualitative:
+  # Setup
+  scaffold: done
+
+  # Literature
+  lit_search: not_started
+  lit_synthesis: not_started
+
+  # Analysis
+  immersion: not_started
+  coding: not_started
+  interpretation: not_started
+  analysis_synthesis: not_started
+
+  # Writing
+  theory_draft: not_started
+  methods_draft: not_started
+  findings_draft: not_started
+  bookends_draft: not_started
+
+  # Quality
+  verification: not_started
+  revision: not_started
+
+# --- QUANTITATIVE STATUS ---
+status_quantitative:
+  # Setup
+  scaffold: done
+
+  # Literature
+  lit_search: not_started
+  lit_synthesis: not_started
+
+  # Data preparation
+  data_acquisition: not_started
+  data_cleaning: not_started
+  variable_construction: not_started
+
+  # Analysis (r-analyst or stata-analyst)
+  statistical_analysis: not_started  # maps to r-analyst/stata-analyst
+  eda: not_started
+  modeling: not_started
+  robustness: not_started
+
+  # Outputs
+  visualization: not_started
+  tables: not_started
+
+  # Writing
+  theory_draft: not_started
+  methods_draft: not_started
+  results_draft: not_started
+  bookends_draft: not_started
+
+  # Quality
+  replication_check: not_started
+  revision: not_started
+
+# --- MIXED METHODS STATUS ---
+status_mixed:
+  # Setup
+  scaffold: done
+
+  # Literature
+  lit_search: not_started
+  lit_synthesis: not_started
+
+  # Qualitative strand
+  qual_immersion: not_started
+  qual_coding: not_started
+  qual_interpretation: not_started
+  qual_synthesis: not_started
+
+  # Quantitative strand (r-analyst or stata-analyst)
+  quant_analysis: not_started  # maps to r-analyst/stata-analyst
+  quant_data_prep: not_started
+  quant_eda: not_started
+  quant_modeling: not_started
+  quant_robustness: not_started
+
+  # Integration
+  integration_design: not_started  # How qual + quant connect
+  integration_analysis: not_started
+
+  # Writing
+  theory_draft: not_started
+  methods_draft: not_started
+  qual_findings_draft: not_started
+  quant_results_draft: not_started
+  integration_draft: not_started
+  bookends_draft: not_started
+
+  # Quality
+  verification: not_started
+  replication_check: not_started
+  revision: not_started
+
+# Active status (set by scaffold based on type)
+status: {}
+
+# Blocked tasks
+# Each entry: {task: string, reason: string, resolved: bool}
+blocked: []
+
+# Quality checks (vary by type)
+checks_qualitative:
+  quotes_verified: false
+  bibliography_complete: false
+  coherence_checked: false
+  methods_complete: false
+
+checks_quantitative:
+  code_documented: false
+  results_reproducible: false
+  bibliography_complete: false
+  coherence_checked: false
+
+checks_mixed:
+  qual_quotes_verified: false
+  quant_reproducible: false
+  integration_coherent: false
+  bibliography_complete: false
+
+# Active checks (set by scaffold based on type)
+checks: {}
+
+# Iteration log
+iterations: []
+
+# Session log
+sessions: []
+
+# Timestamps
+last_updated: ""

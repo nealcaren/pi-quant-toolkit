@@ -1,0 +1,7 @@
+node_modules/
+*.log
+.DS_Store
+.env
+# Zotero DB backups the script may create if run from inside the repo
+*.pi-backup-*
+zotero.sqlite*

@@ -1,0 +1,14 @@
+{
+  "name": "pi-quant-toolkit",
+  "version": "0.1.0",
+  "description": "Pi coding-agent skills + Zotero extension for quantitative social science (R, Stata, text analysis, OpenAlex→Zotero literature search).",
+  "keywords": [
+    "pi-package"
+  ],
+  "license": "MIT",
+  "pi": {
+    "skills": [
+      "./skills"
+    ]
+  }
+}
