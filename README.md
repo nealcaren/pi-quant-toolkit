@@ -61,6 +61,7 @@ npm install -g @earendil-works/pi-coding-agent      # the `pi` command
 pi install git:github.com/<your-org>/pi-quant-toolkit@main
 pi install npm:pi-web-access                        # web search + PDF/URL fetch
 pi install npm:rpiv-ask-user-question               # structured clarifying questions
+pi install npm:@plannotator/pi-extension            # plan mode (review before executing)
 ```
 </details>
 
@@ -78,9 +79,13 @@ matter for research work:
 - **`rpiv-ask-user-question`** — makes the agent ask you a structured question at
   decision points instead of guessing. Helps the cheap default model respect the
   "confirm before searching / before adding to Zotero" checkpoints in the skills.
+- **`@plannotator/pi-extension`** — adds a **plan mode**: the agent drafts a plan
+  you can review (and edit) before it starts executing. Especially helpful for
+  multi-step analysis on the cheap model — you catch a wrong turn before it runs,
+  not after. Trigger it when you want the agent to think before acting.
 
-Both are optional — the skills work without them — but they noticeably improve
-the experience on a budget model.
+All three are optional — the skills work without them — but they noticeably
+improve the experience on a budget model.
 
 ---
 

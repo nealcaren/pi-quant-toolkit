@@ -18,6 +18,8 @@ echo "==> Installing recommended extensions"
 pi install npm:pi-web-access
 # Structured clarifying questions instead of the model guessing
 pi install npm:rpiv-ask-user-question
+# Plan mode: draft a plan and review it before the agent executes
+pi install npm:@plannotator/pi-extension
 
 cat <<'NEXT'
 
