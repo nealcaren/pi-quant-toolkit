@@ -8,7 +8,7 @@ Analysis isn't complete until it's communicated. This phase transforms results i
 
 ## Technique Guides
 
-**Consult these guides** in `r-statistical-techniques/` for output code patterns:
+**Consult these guides** in `techniques/` for output code patterns:
 
 | Topic | Guide |
 |-------|-------|

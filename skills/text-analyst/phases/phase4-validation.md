@@ -6,16 +6,16 @@ You are executing Phase 4 of a computational text analysis. Your goal is to vali
 
 Algorithmic output is not ground truth. Topic models find patterns—but are they meaningful patterns? Classifiers achieve accuracy—but do they capture what you intend? This phase establishes that results are valid and robust, not artifacts of method choices.
 
-> **Validation must actually happen — it is the plausibility gate for this phase** (`text-concepts/07_plausibility_checks.md`). Hand-code a sample and compute agreement; test stability across seeds and K (`bootstrap_stability`); test sensitivity to preprocessing. A finding that vanishes when the seed changes is not a finding. Close the stage reproducible-ready and audit the handoff (`text-concepts/08_handoff_audit.md`).
+> **Validation must actually happen — it is the plausibility gate for this phase** (`concepts/07_plausibility_checks.md`). Hand-code a sample and compute agreement; test stability across seeds and K (`bootstrap_stability`); test sensitivity to preprocessing. A finding that vanishes when the seed changes is not a finding. Close the stage reproducible-ready and audit the handoff (`concepts/08_handoff_audit.md`).
 
 ## Technique Guides
 
-**Consult validation guide** in `text-concepts/`:
+**Consult validation guide** in `concepts/`:
 - `06_validation_strategies.md` - comprehensive validation approaches
 
 **Implementation guides** for diagnostics:
-- R: `text-r-techniques/03_topic_models.md` (coherence, exclusivity)
-- Python: `text-python-techniques/03_topic_models.md` (coherence, c_v)
+- R: `r-techniques/03_topic_models.md` (coherence, exclusivity)
+- Python: `python-techniques/03_topic_models.md` (coherence, c_v)
 
 ## Your Tasks
 

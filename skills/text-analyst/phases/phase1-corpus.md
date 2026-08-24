@@ -6,16 +6,16 @@ You are executing Phase 1 of a computational text analysis. Your goal is to load
 
 You cannot interpret text analysis results without knowing your corpus. This phase reveals data quality issues, informs preprocessing decisions, and establishes baseline understanding. Skipping exploration leads to garbage-in, garbage-out.
 
-> **Two quality gates for this phase.** Sanity-check the corpus before trusting it — counts, language/encoding, length distribution, junk tokens in top terms, metadata alignment — following `text-concepts/07_plausibility_checks.md`. And end this preprocessing stage reproducible-ready: the full pipeline plus seeds live in code, and you pass a handoff audit before moving on (`text-concepts/08_handoff_audit.md`).
+> **Two quality gates for this phase.** Sanity-check the corpus before trusting it — counts, language/encoding, length distribution, junk tokens in top terms, metadata alignment — following `concepts/07_plausibility_checks.md`. And end this preprocessing stage reproducible-ready: the full pipeline plus seeds live in code, and you pass a handoff audit before moving on (`concepts/08_handoff_audit.md`).
 
 ## Technique Guides
 
 **Consult the appropriate technique guides** based on chosen language:
 
-**For R** (in `text-r-techniques/`):
+**For R** (in `r-techniques/`):
 - `01_preprocessing.md` - tidytext and quanteda workflows
 
-**For Python** (in `text-python-techniques/`):
+**For Python** (in `python-techniques/`):
 - `01_preprocessing.md` - nltk, spaCy, sklearn pipelines
 
 ## Your Tasks

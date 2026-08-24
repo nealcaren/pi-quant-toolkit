@@ -10,7 +10,7 @@ This is where the analysis happens. But because you've done Phases 0-2, you're n
 
 ## Technique Guides
 
-**Before writing code, consult the relevant technique guide** in `r-statistical-techniques/` for method-specific patterns:
+**Before writing code, consult the relevant technique guide** in `techniques/` for method-specific patterns:
 
 | Method | Guide |
 |--------|-------|

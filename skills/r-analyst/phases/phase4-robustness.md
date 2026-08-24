@@ -10,7 +10,7 @@ Main results are only as credible as their robustness. Reviewers will ask: "How 
 
 ## Technique Guides
 
-**Consult these guides** in `r-statistical-techniques/` for robustness code patterns:
+**Consult these guides** in `techniques/` for robustness code patterns:
 
 | Topic | Guide |
 |-------|-------|

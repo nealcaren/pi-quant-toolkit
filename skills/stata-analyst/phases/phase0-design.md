@@ -32,10 +32,10 @@ Based on the research question and data structure, determine the appropriate app
 | **Panel FE** | Time-invariant confounders | Strict exogeneity | `reghdfe`, `xtreg` |
 
 For each strategy, reference the relevant technique guide:
-- DiD/Event Study: `stata-statistical-techniques/01_core_econometrics.md`
-- IV: `stata-statistical-techniques/01_core_econometrics.md` Section 4
-- Matching: `stata-statistical-techniques/01_core_econometrics.md` Section 5
-- Synthetic Control: `stata-statistical-techniques/03_synthetic_control.md`
+- DiD/Event Study: `techniques/01_core_econometrics.md`
+- IV: `techniques/01_core_econometrics.md` Section 4
+- Matching: `techniques/01_core_econometrics.md` Section 5
+- Synthetic Control: `techniques/03_synthetic_control.md`
 
 ### 3. Assess Assumptions
 

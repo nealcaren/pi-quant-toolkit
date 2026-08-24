@@ -6,13 +6,13 @@ You are executing Phase 3 of a computational text analysis. Your goal is to run 
 
 This phase executes the pre-specified analysis. The key discipline is: run what was specified, not what looks best after seeing results. Document any deviations.
 
-> **Do not believe any topic, label, or score before checking it.** Run the results plausibility checks in `text-concepts/07_plausibility_checks.md` — read the top documents per topic, compare classifier accuracy to the base rate, validate sentiment on known-polarity documents. Then report cross-method consistency: do LDA/NMF/BERTopic (or dictionary/supervised) converge or diverge? End the stage reproducible-ready and audit the handoff (`text-concepts/08_handoff_audit.md`).
+> **Do not believe any topic, label, or score before checking it.** Run the results plausibility checks in `concepts/07_plausibility_checks.md` — read the top documents per topic, compare classifier accuracy to the base rate, validate sentiment on known-polarity documents. Then report cross-method consistency: do LDA/NMF/BERTopic (or dictionary/supervised) converge or diverge? End the stage reproducible-ready and audit the handoff (`concepts/08_handoff_audit.md`).
 
 ## Technique Guides
 
 **Consult implementation guides** for your language:
 
-**R** (in `text-r-techniques/`):
+**R** (in `r-techniques/`):
 | Method | Guide |
 |--------|-------|
 | Dictionary/sentiment | `02_dictionary_sentiment.md` |
@@ -21,7 +21,7 @@ This phase executes the pre-specified analysis. The key discipline is: run what 
 | Embeddings | `05_embeddings.md` |
 | Visualization | `06_visualization.md` |
 
-**Python** (in `text-python-techniques/`):
+**Python** (in `python-techniques/`):
 | Method | Guide |
 |--------|-------|
 | Dictionary/sentiment | `02_dictionary_sentiment.md` |

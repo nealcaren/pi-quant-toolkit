@@ -10,7 +10,7 @@ Jumping straight to regression is a common mistake. Understanding your data prev
 
 ## Technique Guides
 
-**Consult these guides** in `r-statistical-techniques/` for data handling patterns:
+**Consult these guides** in `techniques/` for data handling patterns:
 
 | Topic | Guide |
 |-------|-------|

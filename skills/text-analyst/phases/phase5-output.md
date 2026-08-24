@@ -9,8 +9,8 @@ Text analysis results require careful interpretation. Overclaimingundermines cre
 ## Technique Guides
 
 **Consult visualization guides** for your language:
-- R: `text-r-techniques/06_visualization.md`
-- Python: `text-python-techniques/06_visualization.md`
+- R: `r-techniques/06_visualization.md`
+- Python: `python-techniques/06_visualization.md`
 
 ## Your Tasks
 
@@ -241,7 +241,7 @@ We used [method] implemented in [package] (version X.X).
 
 ## Final Reproducibility Check
 
-Before shipping, run a clean-room master rebuild (`text-concepts/08_handoff_audit.md`):
+Before shipping, run a clean-room master rebuild (`concepts/08_handoff_audit.md`):
 
 - Execute a single master script (`00_master.R` or `00_master.py`) that rebuilds **every** topic, label, score, model, and figure from the raw corpus — no manual steps, no leftover objects.
 - Reconcile outputs against the paper: with seeds fixed they should be **identical**, table for table and figure for figure. Note any genuinely nondeterministic neural steps (e.g., UMAP/HDBSCAN in BERTopic) and how you bounded them.
@@ -251,7 +251,7 @@ Before shipping, run a clean-room master rebuild (`text-concepts/08_handoff_audi
 
 ## Final Plausibility Pass
 
-Before shipping, re-read a sample of the documents behind every headline claim and confirm they say what the claim says (`text-concepts/07_plausibility_checks.md`). Confirm the convergence/divergence story across methods is stated explicitly in the write-up — do not leave it implicit.
+Before shipping, re-read a sample of the documents behind every headline claim and confirm they say what the claim says (`concepts/07_plausibility_checks.md`). Confirm the convergence/divergence story across methods is stated explicitly in the write-up — do not leave it implicit.
 
 ## Output: Final Package
 
