@@ -1,0 +1,68 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  install-and-boot:
+    name: Install & boot pi (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["22", "24"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Install the Pi agent (latest)
+        run: |
+          npm install -g @earendil-works/pi-coding-agent@latest
+          pi --version
+
+      - name: Install bundled extension dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Validate package.json references
+        run: node scripts/ci-validate.mjs
+
+      - name: Install this package into pi (local checkout)
+        run: pi install "$PWD"
+
+      - name: Boot pi and assert extensions load
+        # A dummy key makes the run fail with a 401 *after* extensions load.
+        # We only care that startup + extension loading did not crash.
+        run: |
+          set -o pipefail
+          out=$(pi -p "reply ok" \
+                  --provider openrouter \
+                  --model deepseek/deepseek-chat \
+                  --api-key dummy-ci-key 2>&1 || true)
+          echo "----- pi output -----"
+          echo "$out"
+          echo "---------------------"
+          if echo "$out" | grep -Eiq "Failed to load extension|markAsUncloneable|Cannot find module|is not a function"; then
+            echo "::error::pi failed to boot or load extensions"
+            exit 1
+          fi
+          echo "Extensions loaded and pi booted cleanly."
+
+  lint-scripts:
+    name: Shellcheck setup.sh
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Syntax-check setup.sh
+        run: bash -n setup.sh
+      - name: Shellcheck
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y shellcheck
+          shellcheck -S warning setup.sh || true   # advisory, non-blocking
