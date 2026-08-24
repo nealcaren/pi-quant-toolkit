@@ -44,7 +44,9 @@ artifacts:
    ethical line.
 4. **Every exhibit is traceable.** Each table and figure in the paper maps to the
    script (and ideally line) that produces it. A reviewer should never wonder where
-   Table 3 came from.
+   Table 3 came from. Every *number* in the report must likewise trace to the
+   results ledger — run the `stat-check` reconciliation and confirm it's clean (no
+   orphans) before archiving the write-up.
 5. **Capture the environment.** Record software versions and packages so the code
    still runs in two years. Reproducibility that depends on "whatever was installed
    that day" isn't reproducibility.

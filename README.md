@@ -93,6 +93,7 @@ session: `/model openrouter/deepseek/deepseek-v4-pro`.
 | `review-stata` | The same read-only review for Stata `.do` files |
 | `review-py` | The same for Python scripts/notebooks (pandas, statsmodels, sklearn, text pipelines) |
 | `repro-package` | Rebuilds your analysis from raw in a clean session and assembles a submission-ready replication archive |
+| `stat-check` | Guards against made-up statistics — writes every result to a ledger and flags any number in your write-up that doesn't trace back to the analysis |
 
 ---
 

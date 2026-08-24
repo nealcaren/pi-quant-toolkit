@@ -94,6 +94,7 @@ If the user is already on a strong model, say so and proceed. Do this check
 ### 6. Output & figures
 - [ ] Tables/figures written to disk with relative paths, not just printed
 - [ ] Numbers in the script match any numbers quoted in the write-up
+- [ ] **`stat-check` reconciliation is clean** — every number in the report traces to `output/results.json` (no orphans); if the analysis has a write-up, run `reconcile_report.py` rather than eyeballing
 - [ ] Figures reproducible (theme/dimensions set in code, not by hand)
 - [ ] **Tables exported to Word (`.docx`) by default** (`modelsummary`/`flextable`), unless the target journal wants LaTeX
 - [ ] **Figures use a colorblind-safe palette** (Okabe–Ito categorical, viridis continuous) — not hand-picked colors; distinguishable in greyscale

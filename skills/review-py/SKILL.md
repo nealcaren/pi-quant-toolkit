@@ -93,6 +93,9 @@ State which model you're reviewing on, **before** reading the code.
 - [ ] **Every number quoted in the write-up is traceable to code** that produces
       it — no hand-typed values. Spot-check that a reported figure equals the
       script's actual output (re-run the cell/line if in doubt).
+- [ ] **`stat-check` reconciliation is clean** — run `reconcile_report.py` against
+      `output/results.json`; every number in the report must trace to a computed
+      value (no orphans).
 - [ ] Tables/figures written to disk with relative paths, not only shown inline
 - [ ] Figures reproducible from code (size/style set in code, not by hand)
 - [ ] **Tables exported to Word (`.docx`) by default** (`python-docx`, or a styled pandas table), unless the target journal wants LaTeX
