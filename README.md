@@ -70,7 +70,7 @@ sign in. Done — you only do this once.
 > *"Run a difference-in-differences on this panel in R."*
 > *"Find recent work on protest and social media and add the best to my Zotero."*
 
-Stuck on a hard analysis? Type `/model deepseek/deepseek-v4-pro` to switch to a
+Stuck on a hard analysis? Type `/model openrouter/deepseek/deepseek-v4-pro` to switch to a
 smarter (slightly pricier) model for that session.
 
 ---
@@ -105,12 +105,12 @@ paths, numerical bugs) **without changing your code** — you decide what to fix
 checking its own work tends to bless its own mistakes. Before reviewing, switch:
 
 ```
-/model deepseek/deepseek-v4-pro
+/model openrouter/deepseek/deepseek-v4-pro
 ```
 
 Even better, if you have access, review with a **different** model family than
 you wrote with — a fresh set of eyes catches what the original missed. Switch
-back to the cheap model (`/model deepseek/deepseek-v4-flash-0731`) for routine
+back to the cheap model (`/model openrouter/deepseek/deepseek-v4-flash-0731`) for routine
 work afterward.
 
 ---
@@ -145,6 +145,20 @@ New references show up next time you open Zotero.
 
 ---
 
+## Updating
+
+This toolkit improves over time. To pull the latest version — both Pi itself and
+the toolkit's skills — open a terminal and run:
+
+```
+pi update --all
+```
+
+To update just the toolkit (not Pi), run `pi update --extensions`. New skills and
+fixes take effect the next time you start `pi`.
+
+---
+
 <details>
 <summary>Advanced: manual install & troubleshooting</summary>
 
@@ -176,6 +190,19 @@ pi install npm:@plannotator/pi-extension
 
 </details>
 
+## Credits
+
+This toolkit stands on others' work:
+
+- **`tidy-r`** is vendored from **[tidy-r-skill](https://github.com/statzhero/tidy-r-skill)**
+  by **Ulrich Atz** (CC-BY-4.0 / MIT) — see `skills/tidy-r/LICENSE`.
+- **`review-r`** is **inspired by** **Pedro H. C. Sant'Anna's**
+  **[r-reviewer / claude-code-my-workflow](https://github.com/pedrohcgs/claude-code-my-workflow)**
+  (MIT); the review protocol and numerical-discipline checklist are his ideas.
+- The core analysis skills derive from the **`sociology-skillset`** project.
+
+With thanks to both authors for sharing their work openly.
+
 ## License
 
-MIT. The bundled skills derive from the `sociology-skillset` project.
+MIT.

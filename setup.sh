@@ -55,6 +55,6 @@ cat <<'NEXT'
       /login openrouter        <- type this once Pi is open
 
   After that, just run  pi  in any project folder and describe your task.
-  Need more power for a hard analysis?  Type:  /model deepseek/deepseek-v4-pro
+  Need more power for a hard analysis?  Type:  /model openrouter/deepseek/deepseek-v4-pro
 
 NEXT
