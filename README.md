@@ -23,14 +23,53 @@ These are analysis + capture tools. There are no writing skills in this bundle.
 
 ---
 
+## Step 0 — install Node.js (do this first)
+
+Everything below needs **Node.js 20+**. Nothing works until `node --version`
+prints `v20` or higher in a fresh terminal. This is the step beginners skip, so
+install it before anything else.
+
+**macOS**
+
+```bash
+# Option A — Homebrew (recommended if you have it)
+brew install node
+
+# Option B — the installer from https://nodejs.org (pick the LTS build)
+```
+
+**Windows**
+
+```powershell
+# Option A — winget (built into Windows 10/11)
+winget install OpenJS.NodeJS.LTS
+
+# Option B — the installer from https://nodejs.org (pick the LTS build).
+# During install, leave "Add to PATH" checked.
+```
+
+Then **close and reopen your terminal** and confirm:
+
+```
+node --version    # should print v20.x or higher
+npm --version
+```
+
+> Windows note: use **PowerShell** (not the old Command Prompt) for everything
+> in this README. The `.sh` scripts and `curl … | sh` lines below are for
+> macOS/Linux only — Windows equivalents are given inline.
+
+---
+
 ## Prerequisites
 
-1. **Node.js 20+** — Pi runs on Node. <https://nodejs.org>
-2. **[uv](https://docs.astral.sh/uv/)** — runs the Python helper scripts
-   (`curl -LsSf https://astral.sh/uv/install.sh | sh`).
+1. **Node.js 20+** — see Step 0 above. <https://nodejs.org>
+2. **[uv](https://docs.astral.sh/uv/)** — runs the Python helper scripts.
+   - macOS/Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+   - Windows (PowerShell): `irm https://astral.sh/uv/install.ps1 | iex`
 3. **R and/or Stata** — only if you use those analysis skills.
 4. **Zotero desktop** — only for `lit-search`. Default library path
-   `~/Zotero/zotero.sqlite`.
+   `~/Zotero/zotero.sqlite` (on Windows, `%USERPROFILE%\Zotero\zotero.sqlite`).
 5. **An [OpenRouter](https://openrouter.ai) account + API key** — this is what
    you pay per token. Add a few dollars of credit to start.
 
@@ -43,19 +82,34 @@ skills *and* web-access + ask-user-question + plan-mode along with it:
 
 ```bash
 npm install -g @earendil-works/pi-coding-agent          # the `pi` command
-pi install git:github.com/<your-org>/pi-quant-toolkit@main
+pi install git:github.com/nealcaren/pi-quant-toolkit@main
 ```
+
+> **macOS `EACCES` error?** If `npm install -g` fails with a permissions error,
+> your global npm folder is a system path. Don't `sudo`. Either install Node via
+> Homebrew/nvm (which fixes the ownership), or point npm at a user-owned folder:
+> `npm config set prefix ~/.npm-global` and add `~/.npm-global/bin` to your PATH.
 
 Then connect OpenRouter (this is what you pay per token, via OAuth or a key):
 
 ```bash
 pi   # then run:  /login openrouter
-# ...or:
+# ...or (macOS/Linux):
 export OPENROUTER_API_KEY=sk-or-...
 ```
 
-> Replace `<your-org>` with wherever this repo is hosted. `./setup.sh` does the
-> same two installs plus prints these next steps.
+```powershell
+# ...or (Windows PowerShell) — persists to future sessions:
+setx OPENROUTER_API_KEY "sk-or-..."
+# then open a NEW terminal so the variable is picked up
+```
+
+> **Run the setup script** instead of the two commands above if you prefer:
+> - macOS/Linux: `./setup.sh`
+> - Windows (PowerShell): `./setup.ps1` — if blocked by execution policy, run
+>   `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass` first.
+>
+> Both do the same two installs plus print these next steps.
 
 <details>
 <summary>If a bundled extension doesn't load</summary>
