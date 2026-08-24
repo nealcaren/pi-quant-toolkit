@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # One-time setup for the pi-quant-toolkit.
-# Installs Pi, this package, and the recommended extensions.
 # Prereqs you must install first: Node.js 20+, uv, and (for lit-search) Zotero.
 set -euo pipefail
 
@@ -10,16 +9,18 @@ PKG="git:github.com/<your-org>/pi-quant-toolkit@main"
 echo "==> Installing Pi (the coding agent)"
 npm install -g @earendil-works/pi-coding-agent
 
-echo "==> Installing the quant-social-science toolkit"
+echo "==> Installing the quant-social-science toolkit (skills + bundled extensions)"
+# This package bundles its extensions (pi-web-access, ask-user-question,
+# plannotator), so this single install brings them along.
 pi install "$PKG"
 
-echo "==> Installing recommended extensions"
-# Web search + URL/PDF fetch (zero-config: uses Exa, no API key needed)
-pi install npm:pi-web-access
-# Structured clarifying questions instead of the model guessing
-pi install npm:rpiv-ask-user-question
-# Plan mode: draft a plan and review it before the agent executes
-pi install npm:@plannotator/pi-extension
+# --- Fallback -------------------------------------------------------------
+# If an extension does not load after the install above (check with /extensions
+# inside pi), install them explicitly:
+#   pi install npm:pi-web-access
+#   pi install npm:@juicesharp/rpiv-ask-user-question
+#   pi install npm:@plannotator/pi-extension
+# --------------------------------------------------------------------------
 
 cat <<'NEXT'
 

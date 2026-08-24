@@ -38,11 +38,12 @@ These are analysis + capture tools. There are no writing skills in this bundle.
 
 ## Install
 
-The quick path — run the setup script (installs Pi, this package, and the
-recommended extensions):
+Two commands. This package **bundles its extensions**, so installing it pulls the
+skills *and* web-access + ask-user-question + plan-mode along with it:
 
 ```bash
-./setup.sh          # edit the PKG line first to point at your repo URL
+npm install -g @earendil-works/pi-coding-agent          # the `pi` command
+pi install git:github.com/<your-org>/pi-quant-toolkit@main
 ```
 
 Then connect OpenRouter (this is what you pay per token, via OAuth or a key):
@@ -53,19 +54,21 @@ pi   # then run:  /login openrouter
 export OPENROUTER_API_KEY=sk-or-...
 ```
 
+> Replace `<your-org>` with wherever this repo is hosted. `./setup.sh` does the
+> same two installs plus prints these next steps.
+
 <details>
-<summary>Or install by hand</summary>
+<summary>If a bundled extension doesn't load</summary>
+
+Check loaded extensions with `/extensions` inside pi. If one is missing, install
+it explicitly:
 
 ```bash
-npm install -g @earendil-works/pi-coding-agent      # the `pi` command
-pi install git:github.com/<your-org>/pi-quant-toolkit@main
-pi install npm:pi-web-access                        # web search + PDF/URL fetch
-pi install npm:rpiv-ask-user-question               # structured clarifying questions
-pi install npm:@plannotator/pi-extension            # plan mode (review before executing)
+pi install npm:pi-web-access
+pi install npm:@juicesharp/rpiv-ask-user-question
+pi install npm:@plannotator/pi-extension
 ```
 </details>
-
-> Replace `<your-org>` with wherever this repo is hosted.
 
 ## Recommended extensions
 

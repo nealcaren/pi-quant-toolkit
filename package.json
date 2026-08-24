@@ -1,14 +1,30 @@
 {
   "name": "pi-quant-toolkit",
   "version": "0.1.0",
-  "description": "Pi coding-agent skills + Zotero extension for quantitative social science (R, Stata, text analysis, OpenAlex→Zotero literature search).",
+  "description": "Pi coding-agent skills + bundled extensions for quantitative social science (R, Stata, text analysis, OpenAlex/Crossref -> Zotero literature search, web search, plan mode).",
   "keywords": [
     "pi-package"
   ],
   "license": "MIT",
+  "dependencies": {
+    "pi-web-access": "^0.24.2",
+    "@juicesharp/rpiv-ask-user-question": "^2.7.0",
+    "@plannotator/pi-extension": "^0.27.7"
+  },
+  "bundledDependencies": [
+    "pi-web-access",
+    "@juicesharp/rpiv-ask-user-question",
+    "@plannotator/pi-extension"
+  ],
   "pi": {
     "skills": [
-      "./skills"
+      "./skills",
+      "node_modules/@plannotator/pi-extension/skills/plannotator/SKILL.md"
+    ],
+    "extensions": [
+      "node_modules/pi-web-access/index.ts",
+      "node_modules/@juicesharp/rpiv-ask-user-question/index.ts",
+      "node_modules/@plannotator/pi-extension"
     ]
   }
 }
