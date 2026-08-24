@@ -6,6 +6,8 @@ You are executing Phase 4 of a statistical analysis in Stata. Your goal is to st
 
 Main results are only as credible as their robustness. Reviewers will ask: "How do you know this isn't driven by [X]?" This phase pre-empts those questions and honestly assesses the fragility of the findings.
 
+> **Read every robustness result through the plausibility lens** (`techniques/08_plausibility_checks.md`). Compare each robustness spec to Main using *confirm / attenuate / overturn* language. Placebo tests MUST pass — a placebo that "works" (finds an effect) is a failure, not a success. The sample `e(N)` must stay stable across checks unless a restriction intentionally changes it. Each stage must end reproducible-ready per `techniques/09_handoff_audit.md`.
+
 ## Technique Guides
 
 **Consult these guides** in `stata-statistical-techniques/` for robustness code patterns:
@@ -375,6 +377,18 @@ The main findings are [robust / partially robust / not robust] to alternative sp
 **Conclusion:**
 The main findings [can / cannot] be considered robust because [reasoning].
 
+### Plausibility Check
+- **Each spec vs Main**: state every robustness result in confirm / attenuate / overturn terms
+- **Placebos pass**: pre-treatment, fake-timing, and unrelated-outcome tests find no effect (a placebo that "works" is a failure)
+- **`e(N)` stable**: sample size holds across checks except where a restriction intentionally changes it
+- **Sensitivity to unobservables**: translate any bound/Oster-style result into plain words
+
+### Handoff Audit
+- **Runs clean**: stage reruns from a fresh Stata session via its do-file
+- **Paths**: canonical paths, `set seed` for bootstrap/imputation
+- **Reconciliation**: `e(N)` reconciles with Main; deviations logged
+- **Committed**: code and log committed; ready for handoff [yes / blockers]
+
 ## Questions for User
 - [Any interpretive questions about robustness]
 ```
@@ -387,5 +401,7 @@ Return a summary to the orchestrator that includes:
 3. Wild bootstrap results (if applicable)
 4. Any concerns about the findings
 5. Confirmation that Phase 4 section was appended to `memos/analysis-memo.md`
+6. Confirmation that each robustness check was compared to Main (confirm/attenuate/overturn) and placebos passed
+7. Confirmation that the handoff audit passed
 
 **Do not proceed to Phase 5 until the user reviews the robustness assessment.**

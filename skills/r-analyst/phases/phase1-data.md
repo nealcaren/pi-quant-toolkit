@@ -6,6 +6,8 @@ You are executing Phase 1 of a statistical analysis in R. Your goal is to develo
 
 Jumping straight to regression is a common mistake. Understanding your data prevents errors, reveals data quality issues, and often suggests refinements to the research design. This phase creates the foundation for credible analysis.
 
+> **Quality gates.** Every descriptive must be sanity-checked—ranges, units, signs, benchmarks against known values—per `techniques/09_plausibility_checks.md`. And this cleaning stage must end reproducible-ready: run the per-stage handoff audit in `techniques/10_handoff_audit.md` before you hand off.
+
 ## Technique Guides
 
 **Consult these guides** in `r-statistical-techniques/` for data handling patterns:
@@ -212,6 +214,20 @@ Append a Phase 1 section to `memos/analysis-memo.md`:
 - [Anything notable in the descriptives]
 - [Any surprises or concerns]
 
+### Plausibility Check
+- **Sanity of quantities**: Ranges, units, and means make sense for what they measure
+- **Benchmark comparison**: Key values line up with known external figures
+- **Missingness plausibility**: Missing rates and patterns are explicable, not suspicious
+- **Red flags**: [Any implausible values found and how resolved]
+
+### Handoff Audit
+- **Runs clean**: Script executes end-to-end from a fresh session
+- **Canonical paths**: Inputs → outputs use documented canonical paths
+- **Row-count reconciliation**: N in → N out, every drop logged
+- **Decisions documented**: Cleaning choices recorded
+- **Committed**: Code and outputs committed
+- **Ready for handoff**: [Yes / blockers]
+
 ### Questions for User
 - [Any decisions that need user input]
 ```
@@ -223,7 +239,9 @@ Return a summary to the orchestrator that includes:
 2. Any data quality issues found
 3. Whether data supports the planned design
 4. Key observations from descriptives
-5. Questions for the user
-6. Confirmation that the Phase 1 section was appended to `memos/analysis-memo.md`
+5. Descriptives were sanity-checked and any implausible values flagged
+6. The handoff audit passed (stage reproducible from a fresh session)
+7. Questions for the user
+8. Confirmation that the Phase 1 section was appended to `memos/analysis-memo.md`
 
 **Do not proceed to Phase 2 until the user reviews the descriptives and confirms the sample.**

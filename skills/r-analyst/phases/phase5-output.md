@@ -275,6 +275,19 @@ sessionInfo()
 ', sep = "")
 ```
 
+## Final Reproducibility Check
+
+Before shipping, the analysis must survive a clean-room reproduction. Run the full checklist in `techniques/10_handoff_audit.md`.
+
+- **Clean-room master run**: From a fresh session (and ideally a fresh checkout), run `code/00_master.R` top to bottom with no manual steps. It must complete without errors.
+- **Output reconciliation**: Confirm every table and figure the run produces matches the numbers in the paper. Reconcile any discrepancy before shipping.
+- **Environment capture**: Record `sessionInfo()` and, where used, the `renv` lockfile so the package pins R and package versions.
+- **Replication package**: Assemble code, data (or a data-access statement), the master script, and a README into a self-contained package.
+
+## Final Plausibility Pass
+
+Before shipping, re-read every headline number one last time (`techniques/09_plausibility_checks.md`). Confirm each is defensible on its own terms and that the **confirm / attenuate / overturn** story across specifications is stated clearly in the write-up.
+
 ## Output: Final Report
 
 Append a Phase 5 section to `memos/analysis-memo.md`:
@@ -316,6 +329,13 @@ Append a Phase 5 section to `memos/analysis-memo.md`:
 
 ### Limitations
 [Honest assessment of limitations]
+
+### Final Reproducibility Check
+- **Clean-room master run**: [Passed / issues] — `00_master.R` runs top to bottom from a fresh session
+- **Outputs reconcile**: [Tables/figures match the paper]
+- **Environment captured**: [sessionInfo() / renv lockfile recorded]
+- **Replication package complete**: [Code, data/access statement, master script, README assembled]
+- **Remaining caveats**: [Any]
 
 ### Conclusion
 [What can and cannot be concluded from this analysis]
@@ -367,7 +387,8 @@ Return a summary to the orchestrator that includes:
 3. Key limitations
 4. Any remaining questions or concerns
 5. Confirmation that replication materials are ready
-6. Checklist tier achieved (minimum/strong/exemplary)
-7. Confirmation that the Phase 5 section was appended to `memos/analysis-memo.md`
+6. Confirmation that the final reproducibility check passed and the replication package is complete
+7. Checklist tier achieved (minimum/strong/exemplary)
+8. Confirmation that the Phase 5 section was appended to `memos/analysis-memo.md`
 
 **The analysis is now complete.** All materials should be ready for paper writing.

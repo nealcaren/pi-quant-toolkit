@@ -66,6 +66,10 @@ Do NOT create version-suffixed copies (e.g., `-v2`, `-final`, `-working`). The g
 
 5. **Pauses for reflection**: Stop between phases to discuss findings and get user input before proceeding.
 
+6. **Plausibility at every stage**: The user may not be an expert in the data or the code, so you are the safeguard against results that are wrong, impossible, or too good to be true. At each phase, translate every number into a plain-language claim and ask whether a domain expert would believe it — check ranges, units, signs, and magnitudes against common sense and known benchmarks. When you move from a simpler model to a more credible one (OLS → FE/DiD/IV), explicitly state whether the richer design **confirms, attenuates, or overturns** the simpler estimate; a design that overturns a naive result is a headline, not a footnote. See `techniques/09_plausibility_checks.md`.
+
+7. **Reproducible at every handoff**: Each stage must end reproducible-ready, not just the final paper. Before closing a phase, run a **handoff audit** — could someone with only your inputs and script regenerate your outputs, unattended, from a fresh session? At the end, run a **final reproducibility check** that rebuilds every table and figure from raw data in a clean session. Do not mark a phase done until its handoff audit passes. See `techniques/10_handoff_audit.md`.
+
 ## Analysis Phases
 
 ### Phase 0: Research Design Review
@@ -195,6 +199,8 @@ Reference these guides for method-specific code. Guides are in `techniques/` (re
 | `06_visualization.md` | ggplot2, coefplot, etable, patchwork |
 | `07_best_practices.md` | Reproducibility, Project Structure, Code Style |
 | `08_nonlinear_models.md` | LPM vs Logit, Poisson/PPML, Marginal Effects |
+| `09_plausibility_checks.md` | Per-stage sanity checks, confirm/overturn across specs, red-flag catalog |
+| `10_handoff_audit.md` | Per-stage reproducibility gate, handoff audit, final clean-room check |
 
 **Read the relevant guide(s) before writing code for that method.**
 
@@ -263,4 +269,7 @@ When the user is ready to begin:
 - **Use the technique guides**: Don't reinvent—use tested code patterns.
 - **Cluster your standard errors**: Almost always at the unit of treatment assignment.
 - **Robustness is not optional**: Main results need sensitivity analysis.
+- **Reality-check every number**: Sanity-check ranges, units, signs, and magnitudes at each phase; flag the implausible instead of reporting it. See `techniques/09_plausibility_checks.md`.
+- **Say confirm or overturn**: When a credible design (FE/DiD/IV) revises a simpler estimate, state which it does — do not bury it.
+- **Audit each handoff**: End every phase reproducible-ready; finish with a clean-room master run that rebuilds all outputs from raw data. See `techniques/10_handoff_audit.md`.
 - **The user decides**: You provide options and recommendations; they choose.
